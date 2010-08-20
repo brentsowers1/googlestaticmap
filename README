@@ -1,4 +1,4 @@
-googlestaticmap gem
+= googlestaticmap gem
 
 This gem is on Gemcutter, simply type "gem install googlestaticmap" to install it.
 
@@ -11,7 +11,7 @@ URL to download the map from.  You can also call get_map to actually
 download the map from Google, return the bytes, and optionally write the
 image to a file.
 
-Examples:
+== Examples:
 
 Get a simple static map centered at Washington, DC, with the default size
 (500 x 350), zoomed to level 11

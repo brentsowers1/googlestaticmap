@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|  
   spec.name        = 'googlestaticmap'  
-  spec.version     = '0.1.1' 
+  spec.version     = '0.1.2'
   spec.files       = Dir['lib/**/*']  
   
   spec.summary     = 'Class for retrieving maps from the Google Maps Static API service'  

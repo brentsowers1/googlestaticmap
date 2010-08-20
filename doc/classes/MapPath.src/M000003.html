@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 228</span>
+  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 231</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">attrs</span>={})
     <span class="ruby-ivar">@points</span> = []
     <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{k}=&quot;</span>.<span class="ruby-identifier">to_sym</span>,<span class="ruby-identifier">v</span>)}

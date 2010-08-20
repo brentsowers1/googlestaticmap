@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
 </head>
 <body class="standalone-code">
-  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 120</span>
+  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 125</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_map</span>(<span class="ruby-identifier">output_file</span>=<span class="ruby-keyword kw">nil</span>)
     <span class="ruby-identifier">http</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;maps.google.com&quot;</span>, <span class="ruby-value">80</span>)
     <span class="ruby-identifier">resp</span>, <span class="ruby-identifier">data</span> = <span class="ruby-identifier">http</span>.<span class="ruby-identifier">get2</span>(<span class="ruby-identifier">relative_url</span>)

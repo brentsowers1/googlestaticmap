@@ -135,13 +135,23 @@ this is not specified, the map will zoom to the markers
           <td class="context-item-desc">
 format of the image:
 
-<pre>
- png8 - 8 bit PNG (default)
- png32 - 32 bit PNG
- gif
- jpg
- jpg-baseline - non-progressive JPEG
-</pre>
+<ul>
+<li>png8 - 8 bit PNG (default)
+
+</li>
+<li>png32 - 32 bit PNG
+
+</li>
+<li>gif
+
+</li>
+<li>jpg
+
+</li>
+<li>jpg-baseline - non-progressive JPEG
+
+</li>
+</ul>
 </td>
         </tr>
         <tr class="top-aligned-row context-row">
@@ -158,19 +168,27 @@ Height of resulting image in pixels, defaults to 350, maximum 640
           <td class="context-item-desc">
 Type of map to create:
 
-<pre>
-  roadmap (default)
-  satellite
-  terrain
-  hybrid - satellite imagery with roads
-</pre>
+<ul>
+<li>roadmap (default)
+
+</li>
+<li>satellite
+
+</li>
+<li>terrain
+
+</li>
+<li>hybrid - satellite imagery with roads
+
+</li>
+</ul>
 </td>
         </tr>
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">markers</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
           <td class="context-item-desc">
-An optional array of MapMarkers
+An optional array of <a href="MapMarker.html">MapMarker</a> instances
 
 </td>
         </tr>
@@ -178,7 +196,8 @@ An optional array of MapMarkers
           <td class="context-item-name">paths</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
           <td class="context-item-desc">
-An optional array of MapPaths and/or MapPolygons to draw
+An optional array of <a href="MapPath.html">MapPath</a> instances and/or <a
+href="MapPolygon.html">MapPolygon</a> instances to draw
 
 </td>
         </tr>
@@ -203,7 +222,7 @@ Width of resulting image in pixels, defaults to 500, maximum 640
           <td class="context-item-name">zoom</td>
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
           <td class="context-item-desc">
-0 (the whole world) to 21 (individual buildings), only set if center is set
+0 (the whole world) to 21 (individual buildings)
 
 </td>
         </tr>

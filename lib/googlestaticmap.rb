@@ -1,3 +1,9 @@
+# = googlestaticmap gem
+#
+# This gem is on Gemcutter, simply type "gem install googlestaticmap" to install it.
+#
+# Available on github at http://github.com/brentsowers1/googlestaticmap
+#
 # Class for generating URLs for and downloading static maps from the Google Maps
 # Static API service.  GoogleStaticMap is the main class to use, instantiate it,
 # set the attributes to what you want, and call full_url on the instance to get 
@@ -39,6 +45,7 @@
 
 require 'cgi'
 require 'net/http'
+require File.dirname(__FILE__) +  '/googlestaticmap_helper'
 
 # Main class for creating a static map.  Create an instance, Set attributes
 # that describe properties of the map.  Then call url to get a URL that you
@@ -51,17 +58,17 @@ class GoogleStaticMap
   # Height of resulting image in pixels, defaults to 350, maximum 640
   attr_accessor :height
 
-  # An optional array of MapMarkers
+  # An optional array of MapMarker instances
   attr_accessor :markers
 
-  # An optional array of MapPaths and/or MapPolygons to draw
+  # An optional array of MapPath instances and/or MapPolygon instances to draw
   attr_accessor :paths
 
   # MapLocation for the center of the map. If this is not specified, the map
   # will zoom to the markers
   attr_accessor :center
 
-  # 0 (the whole world) to 21 (individual buildings), only set if center is set
+  # 0 (the whole world) to 21 (individual buildings)
   attr_accessor :zoom
 
   # Applications that determine the user's location via a sensor must set this
@@ -69,18 +76,18 @@ class GoogleStaticMap
   attr_accessor :sensor
 
   # format of the image:
-  #  png8 - 8 bit PNG (default)
-  #  png32 - 32 bit PNG
-  #  gif
-  #  jpg
-  #  jpg-baseline - non-progressive JPEG
+  # * png8 - 8 bit PNG (default)
+  # * png32 - 32 bit PNG
+  # * gif
+  # * jpg
+  # * jpg-baseline - non-progressive JPEG
   attr_accessor :format
 
   # Type of map to create:
-  #   roadmap (default)
-  #   satellite
-  #   terrain
-  #   hybrid - satellite imagery with roads
+  # * roadmap (default)
+  # * satellite
+  # * terrain
+  # * hybrid - satellite imagery with roads
   attr_accessor :maptype
 
   # Takes an optional hash of attributes
@@ -95,13 +102,11 @@ class GoogleStaticMap
   # src for an img to display an image directly on a web page
   # Example - "http://maps.google.com/maps/api/staticmap?params..."
   def url
+    unless @center || (@markers && @markers.length > 0) || (@paths || @paths.length > 0)
+      raise Exception.new("Need to specify either a center, markers, or a path")
+    end
     u = "http://maps.google.com/maps/api/staticmap?"
-    ivs = self.instance_variables.clone
-    ivs.delete(:@markers)
-    ivs.delete(:@paths)
-    ivs.delete(:@width)
-    ivs.delete(:@height)
-    attrs = ivs.collect {|iv| [iv[1..-1], CGI.escape(self.instance_variable_get(iv.to_sym).to_s)]}
+    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["markers", "paths", "width", "height"], :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
@@ -196,10 +201,8 @@ class MapMarker
 
   def to_s
     raise Exception.new("Need a location for the marker") unless @location
-    ivs = self.instance_variables.clone
-    ivs.delete(:@location)
-    attrs = ivs.collect {|iv| [iv[1..-1], self.instance_variable_get(iv.to_sym)]}
-    s = attrs.collect do |k|
+    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["location"])
+    s = attrs.to_a.collect do |k|
       # If the icon URL is URL encoded, it won't work
       val = (k[0] == "icon" ? k[1] : CGI.escape(k[1].to_s))
       "#{k[0]}:#{val}"      
@@ -232,10 +235,8 @@ class MapPath
 
   def to_s
     raise Exception.new("Need points for the path") unless @points && @points.length > 0
-    ivs = self.instance_variables.clone
-    ivs.delete(:@points)
-    attrs = ivs.collect {|iv| [iv[1..-1], self.instance_variable_get(iv.to_sym)]}   
-    s = attrs.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join("|")
+    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["points"])
+    s = attrs.to_a.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join("|")
     s << "|" << @points.join("|")
   end
 end
@@ -257,3 +258,5 @@ class MapPolygon < MapPath
     attrs.each {|k,v| self.send("#{k}=".to_sym,v)}
   end
 end
+
+
