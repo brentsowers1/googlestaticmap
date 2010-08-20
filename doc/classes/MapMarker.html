@@ -1,9 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>Class: MapMarker [RDoc Documentation]</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Class: MapMarker</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
   <script type="text/javascript">
@@ -22,7 +25,7 @@
       return false;
 
     elemStyle = elem.style;
-
+    
     if ( elemStyle.display != "block" ) {
       elemStyle.display = "block"
     } else {
@@ -31,15 +34,16 @@
 
     return true;
   }
-
+  
   // Make codeblocks hidden by default
-  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }<\/style>" )
-
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
   // ]]>
   </script>
 
 </head>
 <body>
+
 
 
     <div id="classHeader">
@@ -51,35 +55,26 @@
         <tr class="top-aligned-row">
             <td><strong>In:</strong></td>
             <td>
-
-
                 <a href="../files/lib/googlestaticmap_rb.html">
-
                 lib/googlestaticmap.rb
-
                 </a>
-
-
         <br />
-
             </td>
         </tr>
-
 
         <tr class="top-aligned-row">
             <td><strong>Parent:</strong></td>
             <td>
-
                 Object
-
             </td>
         </tr>
-
         </table>
     </div>
   <!-- banner header -->
 
   <div id="bodyContent">
+
+
 
   <div id="contextContent">
 
@@ -90,26 +85,26 @@ A single marker to place on the map. Initialize and pass
 
     </div>
 
-   </div>
 
+   </div>
 
     <div id="method-list">
       <h3 class="section-bar">Methods</h3>
 
       <div class="name-list">
-
-        <a href="#M000007">new</a>&nbsp;&nbsp;
-
-        <a href="#M000008">to_s</a>&nbsp;&nbsp;
-
+      <a href="#M000001">new</a>&nbsp;&nbsp;
+      <a href="#M000002">to_s</a>&nbsp;&nbsp;
       </div>
     </div>
 
   </div>
 
+
     <!-- if includes -->
 
     <div id="section">
+
+
 
 
 
@@ -118,145 +113,109 @@ A single marker to place on the map. Initialize and pass
 
       <div class="name-list">
         <table>
-
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">color</td>
-
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-
           <td class="context-item-desc">
 A 24-bit color (example: 0xFFFFCC) or a predefined color from the set
 {black, brown, green, purple, yellow, blue, gray, orange, red, white}
 
 </td>
         </tr>
-
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">icon</td>
-
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-
           <td class="context-item-desc">
-a URL to use as the marker&#8217;s custom icon. Images may be in PNG, JPEG
+a URL to use as the marker&#8216;s custom icon. Images may be in PNG, JPEG
 or GIF formats, though PNG is recommended
 
 </td>
         </tr>
-
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">label</td>
-
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-
           <td class="context-item-desc">
 (optional) A single uppercase alphanumeric character label from the set
 {A-Z, 0-9}. Not allowed for tiny and small sizes
 
 </td>
         </tr>
-
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">location</td>
-
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-
           <td class="context-item-desc">
 <a href="MapLocation.html">MapLocation</a> for the position of this marker
 
 </td>
         </tr>
-
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">shadow</td>
-
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-
           <td class="context-item-desc">
 true (default) indicates that the Static Maps service should construct an
-appropriate shadow for the image. This shadow is based on the image&#8217;s
+appropriate shadow for the image. This shadow is based on the image&#8216;s
 visible region and its opacity/transparency.
 
 </td>
         </tr>
-
         <tr class="top-aligned-row context-row">
           <td class="context-item-name">size</td>
-
           <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
-
           <td class="context-item-desc">
 (optional) The size of marker from the set {tiny, small, mid}. Defaults to
 mid
 
 </td>
         </tr>
-
         </table>
       </div>
     </div>
+      
 
 
     <!-- if method_list -->
-
     <div id="methods">
-
       <h3 class="section-bar">Public Class methods</h3>
 
-
-      <div id="method-M000007" class="method-detail">
-        <a name="M000007"></a>
+      <div id="method-M000001" class="method-detail">
+        <a name="M000001"></a>
 
         <div class="method-heading">
-
-          <a href="MapMarker.src/M000007.html" target="Code" class="method-signature"
-            onclick="popupCode('MapMarker.src/M000007.html');return false;">
-
+          <a href="MapMarker.src/M000001.html" target="Code" class="method-signature"
+            onclick="popupCode('MapMarker.src/M000001.html');return false;">
           <span class="method-name">new</span><span class="method-args">(attrs={})</span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
           <p>
 Takes an optional hash of attributes
 </p>
-
         </div>
       </div>
-
 
       <h3 class="section-bar">Public Instance methods</h3>
 
-
-      <div id="method-M000008" class="method-detail">
-        <a name="M000008"></a>
+      <div id="method-M000002" class="method-detail">
+        <a name="M000002"></a>
 
         <div class="method-heading">
-
-          <a href="MapMarker.src/M000008.html" target="Code" class="method-signature"
-            onclick="popupCode('MapMarker.src/M000008.html');return false;">
-
+          <a href="MapMarker.src/M000002.html" target="Code" class="method-signature"
+            onclick="popupCode('MapMarker.src/M000002.html');return false;">
           <span class="method-name">to_s</span><span class="method-args">()</span>
-
           </a>
-
         </div>
-
+      
         <div class="method-description">
-
         </div>
       </div>
-
 
 
     </div>
 
 
-
-
   </div>
+
 
 <div id="validator-badges">
   <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>

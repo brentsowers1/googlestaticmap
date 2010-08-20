@@ -91,9 +91,10 @@ class GoogleStaticMap
     attributes.each {|k,v| self.send("#{k}=".to_sym,v)}
   end
 
-  # Returns the full URL to retrieve this static map.  You can use this in
-  # image_tag as the src to display the image directly on a Rails page
-  def full_url
+  # Returns the full URL to retrieve this static map.  You can use this as the
+  # src for an img to display an image directly on a web page
+  # Example - "http://maps.google.com/maps/api/staticmap?params..."
+  def url
     u = "http://maps.google.com/maps/api/staticmap?"
     ivs = self.instance_variables.clone
     ivs.delete(:@markers)
@@ -108,8 +109,9 @@ class GoogleStaticMap
   end
 
   # Returns the URL to retrieve the map, relative to http://maps.google.com
-  def url
-    full_url.gsub(/http\:\/\/maps\.google\.com/, "")
+  # Example - "/maps/api/staticmap?params..."
+  def relative_url
+    url.gsub(/http\:\/\/maps\.google\.com/, "")
   end
 
   # Connects to Google, retrieves the map, and returns the bytes for the image.
@@ -117,12 +119,12 @@ class GoogleStaticMap
   # this file name
   def get_map(output_file=nil)
     http = Net::HTTP.new("maps.google.com", 80)
-    resp, data = http.get2(url.gsub(/http\:\/\/maps\.google\.com/, ""))
+    resp, data = http.get2(relative_url)
     if resp && resp.is_a?(Net::HTTPSuccess)
       if output_file
         File.open(output_file, "wb") {|f| f << data }
-        data
       end
+      data
     else
       if resp
         raise Exception.new("Error encountered while retrieving google map, code #{resp.code}, text #{resp.body}")

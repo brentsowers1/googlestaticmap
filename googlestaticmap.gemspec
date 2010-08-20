@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|  
   spec.name        = 'googlestaticmap'  
-  spec.version     = '0.1.0' 
+  spec.version     = '0.1.1' 
   spec.files       = Dir['lib/**/*']  
   
   spec.summary     = 'Class for retrieving maps from the Google Maps Static API service'  
@@ -9,6 +9,6 @@ Gem::Specification.new do |spec|
   spec.authors           = 'Brent Sowers'  
   spec.email             = 'brent@coordinatecommons.com'  
   spec.extra_rdoc_files  = ['README']
-  spec.homepage          = 'http://github.com/brentsowers1/googlestaticmap'
+  spec.homepage          = 'http://www.coordinatecommons.com/googlestaticmap/'
   spec.has_rdoc          = true
 end   

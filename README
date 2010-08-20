@@ -2,6 +2,8 @@ googlestaticmap gem
 
 This gem is on Gemcutter, simply type "gem install googlestaticmap" to install it.
 
+Available on github at http://github.com/brentsowers1/googlestaticmap
+
 Class for generating URLs for and downloading static maps from the Google Maps
 Static API service.  GoogleStaticMap is the main class to use, instantiate it,
 set the attributes to what you want, and call url on the instance to get the
