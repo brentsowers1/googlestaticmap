@@ -1,0 +1,14 @@
+Gem::Specification.new do |spec|  
+  spec.name        = 'googlestaticmap'  
+  spec.version     = '0.1.0' 
+  spec.files       = Dir['lib/**/*']  
+  
+  spec.summary     = 'Class for retrieving maps from the Google Maps Static API service'  
+  spec.description = "Easily retrieve single PNG, GIF, or JPG map images from Google with your own custom markers and paths using the Static Maps API service with this gem.  Simply set the attributes you want for your map and GoogleStaticMap will take care of getting the map for you, or giving your the URL to retrieve the map."
+  
+  spec.authors           = 'Brent Sowers'  
+  spec.email             = 'brent@coordinatecommons.com'  
+  spec.extra_rdoc_files  = ['README']
+  spec.homepage          = 'http://github.com/brentsowers1/googlestaticmap'
+  spec.has_rdoc          = true
+end   

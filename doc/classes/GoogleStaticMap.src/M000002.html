@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>full_url (GoogleStaticMap)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 96</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_url</span>
+    <span class="ruby-identifier">u</span> = <span class="ruby-value str">&quot;http://maps.google.com/maps/api/staticmap?&quot;</span>
+    <span class="ruby-identifier">ivs</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">instance_variables</span>.<span class="ruby-identifier">clone</span>
+    <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:@markers</span>)
+    <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:@paths</span>)
+    <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:@width</span>)
+    <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:@height</span>)
+    <span class="ruby-identifier">attrs</span> = <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">iv</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">iv</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-identifier">iv</span>.<span class="ruby-identifier">to_sym</span>).<span class="ruby-identifier">to_s</span>)]}
+    <span class="ruby-identifier">attrs</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;size&quot;</span>, <span class="ruby-node">&quot;#{@width}x#{@height}&quot;</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@width</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@height</span>
+    <span class="ruby-identifier">markers</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">attrs</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;markers&quot;</span>,<span class="ruby-identifier">m</span>.<span class="ruby-identifier">to_s</span>] }
+    <span class="ruby-identifier">paths</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">attrs</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;path&quot;</span>,<span class="ruby-identifier">p</span>.<span class="ruby-identifier">to_s</span>] }
+    <span class="ruby-identifier">u</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">attr</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;#{attr[0]}=#{attr[1]}&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&amp;&quot;</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
