@@ -102,7 +102,7 @@ class GoogleStaticMap
   # src for an img to display an image directly on a web page
   # Example - "http://maps.google.com/maps/api/staticmap?params..."
   def url
-    unless @center || (@markers && @markers.length > 0) || (@paths || @paths.length > 0)
+    unless @center || @markers.length > 0 || @paths.length > 0
       raise Exception.new("Need to specify either a center, markers, or a path")
     end
     u = "http://maps.google.com/maps/api/staticmap?"
@@ -200,7 +200,7 @@ class MapMarker
   end
 
   def to_s
-    raise Exception.new("Need a location for the marker") unless @location
+    raise Exception.new("Need a location for the marker") unless @location && @location.is_a?(MapLocation)
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["location"])
     s = attrs.to_a.collect do |k|
       # If the icon URL is URL encoded, it won't work
@@ -234,7 +234,7 @@ class MapPath
   end
 
   def to_s
-    raise Exception.new("Need points for the path") unless @points && @points.length > 0
+    raise Exception.new("Need more than one point for the path") unless @points && @points.length > 1
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["points"])
     s = attrs.to_a.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join("|")
     s << "|" << @points.join("|")
