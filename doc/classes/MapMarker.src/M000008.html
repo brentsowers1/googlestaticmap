@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>to_s (MapMarker)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 202</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;Need a location for the marker&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@location</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@location</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">MapLocation</span>)
+    <span class="ruby-identifier">attrs</span> = <span class="ruby-constant">GoogleStaticMapHelpers</span>.<span class="ruby-identifier">safe_instance_variables</span>(<span class="ruby-keyword kw">self</span>, [<span class="ruby-value str">&quot;location&quot;</span>])
+    <span class="ruby-identifier">s</span> = <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+      <span class="ruby-comment cmt"># If the icon URL is URL encoded, it won't work</span>
+      <span class="ruby-identifier">val</span> = (<span class="ruby-identifier">k</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;icon&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">k</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">:</span> <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">k</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span>))
+      <span class="ruby-node">&quot;#{k[0]}:#{val}&quot;</span>      
+    <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;|&quot;</span>)
+    <span class="ruby-identifier">s</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;|#{@location.to_s}&quot;</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

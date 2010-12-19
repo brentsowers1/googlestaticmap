@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>url (GoogleStaticMap)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 104</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">url</span>
+    <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@center</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@markers</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@paths</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;Need to specify either a center, markers, or a path&quot;</span>)
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-identifier">u</span> = <span class="ruby-value str">&quot;http://maps.google.com/maps/api/staticmap?&quot;</span>
+    <span class="ruby-identifier">attrs</span> = <span class="ruby-constant">GoogleStaticMapHelpers</span>.<span class="ruby-identifier">safe_instance_variables</span>(<span class="ruby-keyword kw">self</span>, [<span class="ruby-value str">&quot;markers&quot;</span>, <span class="ruby-value str">&quot;paths&quot;</span>, <span class="ruby-value str">&quot;width&quot;</span>, <span class="ruby-value str">&quot;height&quot;</span>], <span class="ruby-identifier">:cgi_escape_values</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>).<span class="ruby-identifier">to_a</span>
+    <span class="ruby-identifier">attrs</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;size&quot;</span>, <span class="ruby-node">&quot;#{@width}x#{@height}&quot;</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@width</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@height</span>
+    <span class="ruby-identifier">markers</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">attrs</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;markers&quot;</span>,<span class="ruby-identifier">m</span>.<span class="ruby-identifier">to_s</span>] }
+    <span class="ruby-identifier">paths</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">attrs</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-value str">&quot;path&quot;</span>,<span class="ruby-identifier">p</span>.<span class="ruby-identifier">to_s</span>] }
+    <span class="ruby-identifier">u</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">attr</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;#{attr[0]}=#{attr[1]}&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&amp;&quot;</span>)
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>
