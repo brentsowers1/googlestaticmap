@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'cgi'
+require 'uri'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap'
 
 class MapMarkerTest < Test::Unit::TestCase #:nodoc: all
@@ -34,7 +34,7 @@ class MapMarkerTest < Test::Unit::TestCase #:nodoc: all
     s = nil
     assert_nothing_raised {s = m.to_s}
     assert_equal 6, s.split("|").length
-    assert s.include?(CGI.escape("Washington, DC"))
+    assert s.include?(URI.escape("Washington, DC"))
     assert s.include?("color:green")
     assert s.include?("icon:http://www.google.com")
   end

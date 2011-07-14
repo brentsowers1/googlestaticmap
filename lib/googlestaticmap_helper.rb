@@ -9,8 +9,8 @@ module GoogleStaticMapHelpers #:nodoc: all
   # {"variable_1" => 123, "variable_2" => "2 value"}
   # All inputs and outputs do NOT have the @ in the instance variable name
   # options -
-  #   :cgi_escape_values - set this to true to return all values as
-  #   CGI escaped strings
+  #   :uri_escape_values - set this to true to return all values as
+  #   URI escaped strings
   def self.safe_instance_variables(object, ivs_to_exclude=[], options={})
     ivs = {}
     object.instance_variables.each do |i|
@@ -18,7 +18,7 @@ module GoogleStaticMapHelpers #:nodoc: all
       iv_name = i.to_s[1..-1]
       unless ivs_to_exclude.include?(iv_name)
         val = object.instance_variable_get(i)
-        val = CGI.escape(val.to_s) if options.has_key?(:cgi_escape_values)
+        val = URI.escape(val.to_s) if options.has_key?(:uri_escape_values)
         ivs[iv_name] = val
       end
     end

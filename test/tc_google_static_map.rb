@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'test/unit'
-require 'cgi'
+require 'uri'
 require 'net/http'
 require 'mocha'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap'

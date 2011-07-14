@@ -10,9 +10,9 @@
   <pre><span class="ruby-comment cmt"># File lib/googlestaticmap.rb, line 160</span>
   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">latitude</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">longitude</span>
-      <span class="ruby-node">&quot;#{CGI.escape(latitude.to_s)},#{CGI.escape(longitude.to_s)}&quot;</span>
+      <span class="ruby-node">&quot;#{URI.escape(latitude.to_s)},#{URI.escape(longitude.to_s)}&quot;</span>
     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">address</span>
-      <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">address</span>)
+      <span class="ruby-constant">URI</span>.<span class="ruby-identifier">escape</span>(<span class="ruby-identifier">address</span>)
     <span class="ruby-keyword kw">else</span>
       <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;Need to set either latitude and longitude, or address&quot;</span>)
     <span class="ruby-keyword kw">end</span>

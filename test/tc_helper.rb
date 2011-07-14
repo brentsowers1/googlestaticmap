@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'cgi'
+require 'uri'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap_helper'
 
 class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
@@ -42,11 +42,11 @@ class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
     end
   end
 
-  def test_safe_instance_variables_cgi
+  def test_safe_instance_variables_uri
     [MockRuby18Object, MockRuby19Object].each do |o|
-      sivs = GoogleStaticMapHelpers.safe_instance_variables(o, [], :cgi_escape_values => true)
+      sivs = GoogleStaticMapHelpers.safe_instance_variables(o, [], :uri_escape_values => true)
       assert_equal IVS.length, sivs.length
-      assert_equal CGI.escape(IVS["@url"]), sivs["url"]
+      assert_equal URI.escape(IVS["@url"]), sivs["url"]
     end
   end
 

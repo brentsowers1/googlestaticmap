@@ -43,7 +43,7 @@
 # Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
 # License:: You're free to do whatever you want with this
 
-require 'cgi'
+require 'uri'
 require 'net/http'
 require File.dirname(__FILE__) +  '/googlestaticmap_helper'
 
@@ -106,7 +106,7 @@ class GoogleStaticMap
       raise Exception.new("Need to specify either a center, markers, or a path")
     end
     u = "http://maps.google.com/maps/api/staticmap?"
-    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["markers", "paths", "width", "height"], :cgi_escape_values => true).to_a
+    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["markers", "paths", "width", "height"], :uri_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
@@ -159,9 +159,9 @@ class MapLocation
 
   def to_s
     if latitude && longitude
-      "#{CGI.escape(latitude.to_s)},#{CGI.escape(longitude.to_s)}"
+      "#{URI.escape(latitude.to_s)},#{URI.escape(longitude.to_s)}"
     elsif address
-      CGI.escape(address)
+      URI.escape(address)
     else
       raise Exception.new("Need to set either latitude and longitude, or address")
     end
@@ -204,7 +204,7 @@ class MapMarker
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["location"])
     s = attrs.to_a.collect do |k|
       # If the icon URL is URL encoded, it won't work
-      val = (k[0] == "icon" ? k[1] : CGI.escape(k[1].to_s))
+      val = (k[0] == "icon" ? k[1] : URI.escape(k[1].to_s))
       "#{k[0]}:#{val}"      
     end.join("|")
     s << "|#{@location.to_s}"
@@ -236,7 +236,7 @@ class MapPath
   def to_s
     raise Exception.new("Need more than one point for the path") unless @points && @points.length > 1
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["points"])
-    s = attrs.to_a.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join("|")
+    s = attrs.to_a.collect {|k| "#{k[0]}:#{URI.escape(k[1].to_s)}"}.join("|")
     s << "|" << @points.join("|")
   end
 end

@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'cgi'
+require 'uri'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap'
 
 class MapLocationTest < Test::Unit::TestCase #:nodoc: all
@@ -25,7 +25,7 @@ class MapLocationTest < Test::Unit::TestCase #:nodoc: all
     m = MapLocation.new(:address => "Washington, DC")
     s = ""
     assert_nothing_raised { s = m.to_s }
-    assert_equal s, CGI.escape("Washington, DC")
+    assert_equal s, URI.escape("Washington, DC")
   end
 
   def test_with_latitude_longitude

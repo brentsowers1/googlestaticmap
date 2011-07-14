@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'cgi'
+require 'uri'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap'
 
 class MapPathAndPolygonTest < Test::Unit::TestCase #:nodoc: all
