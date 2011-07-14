@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'cgi'
+require File.dirname(__FILE__) +  '/../lib/googlestaticmap'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap_helper'
 
 class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
