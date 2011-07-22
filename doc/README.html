@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>File: README [RDoc Documentation]</title>
+
+  <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet" />
+
+  <script src="./js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file">
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./History_txt.html">History.txt</a></li>
+        
+          <li class="file"><a href="./README.html">README</a></li>
+        
+          <li class="file"><a href="./Rakefile.html">Rakefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./GoogleStaticMap.html">GoogleStaticMap</a></li>
+        
+          <li><a href="./MapLocation.html">MapLocation</a></li>
+        
+          <li><a href="./MapMarker.html">MapMarker</a></li>
+        
+          <li><a href="./MapPath.html">MapPath</a></li>
+        
+          <li><a href="./MapPolygon.html">MapPolygon</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    
+<h1>googlestaticmap gem</h1>
+
+<p>This gem is on Gemcutter, simply type “gem install googlestaticmap” to
+install it.</p>
+
+<p>Available on github at <a
+href="http://github.com/brentsowers1/googlestaticmap">github.com/brentsowers1/googlestaticmap</a></p>
+
+<p>Class for generating URLs for and downloading static maps from the Google
+Maps Static API service.  <a
+href="GoogleStaticMap.html">GoogleStaticMap</a> is the main class to use,
+instantiate it, set the attributes to what you want, and call url on the
+instance to get the URL to download the map from.  You can also call
+get_map to actually download the map from Google, return the bytes, and
+optionally write the image to a file.</p>
+
+<h2>Examples:</h2>
+
+<p>Get a simple static map centered at Washington, DC, with the default size
+(500 x 350), zoomed to level 11</p>
+
+<pre>require 'googlestaticmap'
+map = GoogleStaticMap.new(:zoom =&gt; 11, :center =&gt; MapLocation.new(:address =&gt; &quot;Washington, DC&quot;))
+image = map.get_map</pre>
+
+<p>Get a map with blue markers at the White House and the Supreme Court,
+zoomed the closest that the map can be with both markers visible, at the
+default size.</p>
+
+<pre>require 'googlestaticmap'
+map = GoogleStaticMap.new
+map.markers &lt;&lt; MapMarker.new(:color =&gt; &quot;blue&quot;, :location =&gt; MapLocation.new(:address =&gt; &quot;1600 Pennsylvania Ave., Washington, DC&quot;))
+map.markers &lt;&lt; MapMarker.new(:color =&gt; &quot;blue&quot;, :location =&gt; MapLocation.new(:address =&gt; &quot;1 1st Street Northeast, Washington, DC&quot;))
+image = map.get_map</pre>
+
+<p>Get a GIF satellite map, with a size of 640 x 480, with a semi transparent
+green box drawn around a set of 4 coordinates, with the box outline solid,
+centered at the middle of the box, written out to the file map.gif:</p>
+
+<pre>require 'googlestaticmap'
+map = GoogleStaticMap.new(:maptype =&gt; &quot;satellite&quot;, :format =&gt; &quot;gif&quot;, :width =&gt; 640, :height =&gt; 480)
+poly = MapPolygon.new(:color =&gt; &quot;0x00FF00FF&quot;, :fillcolor =&gt; &quot;0x00FF0060&quot;)
+poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 38.8, :longitude =&gt; -77.5)
+poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 38.8, :longitude =&gt; -76.9)
+poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 39.2, :longitude =&gt; -76.9)
+poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 39.2, :longitude =&gt; -77.5)
+poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 38.8, :longitude =&gt; -77.5)
+map.paths &lt;&lt; poly
+map.get_map(&quot;map.gif&quot;)</pre>
+<table class="rdoc-list"><tr><td class="rdoc-term"><p>Author</p></td>
+<td>
+<p>Brent Sowers (<a
+href="mailto:brent@coordinatecommons.com">brent@coordinatecommons.com</a>)</p>
+</td></tr><tr><td class="rdoc-term"><p>License</p></td>
+<td>
+<p>You’re free to do whatever you want with this</p>
+</td></tr></table>
+
+<p>To post comments about this gem, go to my blog posting at <a
+href="http://rails.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html">rails.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html</a></p>
+
+  </div>
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+</body>
+</html>
+

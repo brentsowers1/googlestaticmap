@@ -106,10 +106,13 @@ class GoogleStaticMap
       raise Exception.new("Need to specify either a center, markers, or a path")
     end
     u = "http://maps.google.com/maps/api/staticmap?"
-    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["markers", "paths", "width", "height"], :cgi_escape_values => true).to_a
+    attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
+              ["markers", "paths", "width", "height", "center"],
+              :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
+    attrs << ["center", center.to_s] if !center.nil?
     u << attrs.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
   end
 

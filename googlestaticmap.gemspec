@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|  
   spec.name        = 'googlestaticmap'  
-  spec.version     = '0.1.5'
+  spec.version     = '1.0.0'
   spec.files       = Dir['lib/**/*', 'test/**/*', 'README', 'History.txt']
   spec.test_files  = Dir.glob('test/tc_*.rb')
   

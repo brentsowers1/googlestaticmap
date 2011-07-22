@@ -1,3 +1,8 @@
+=== 1.0.0 / 2011-07-21
+* An explicitly set map center is now properly encoded - was previously being doubly encoded (thanks abecciu)
+* Gem will now load on some bad Rubygems installations (path issue)
+* Version 1.0, yeah!
+
 === 0.1.5 / 2011-02-08
 * Fixed bug which caused require 'googlestaticmap' to not work on some versions of Ruby
 

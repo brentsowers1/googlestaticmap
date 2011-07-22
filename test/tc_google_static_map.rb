@@ -54,11 +54,13 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     g = default_map
     u = nil
     assert_nothing_raised { u = g.url }
-    assert_equal 4, u.split("&").length
+    assert_equal 6, u.split("&").length
     assert u.include?("size=600x400"), "width and height did not get converted in to a size"
     assert u.include?("maptype=hybrid")
     assert u.include?("asdf")
     assert u.include?("http://maps.google.com")
+    assert u.include?("color:0x00FF00FF|fillcolor:0x00FF0060|38.8,-77.5|38.8,-76.9|39.2,-76.9|39.2,-77.5|38.8,-77.5"), "Polygon not in URL"
+    assert u.include?("Washington%2C+DC")
 
     f = nil
     assert_nothing_raised {f = g.relative_url}
@@ -115,8 +117,17 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
   private
   def default_map
+    poly = MapPolygon.new(:color => "0x00FF00FF", :fillcolor => "0x00FF0060")
+    poly.points << MapLocation.new(:latitude => 38.8, :longitude => -77.5)
+    poly.points << MapLocation.new(:latitude => 38.8, :longitude => -76.9)
+    poly.points << MapLocation.new(:latitude => 39.2, :longitude => -76.9)
+    poly.points << MapLocation.new(:latitude => 39.2, :longitude => -77.5)
+    poly.points << MapLocation.new(:latitude => 38.8, :longitude => -77.5)
+
     GoogleStaticMap.new(:width => 600, :height => 400,
                         :markers => [MapMarker.new(:location => MapLocation.new(:address => "asdf"))],
+                        :center => MapLocation.new(:address => "Washington, DC"),
+                        :paths => [poly],
                         :maptype => "hybrid")
   end
 end
