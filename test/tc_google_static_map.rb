@@ -54,7 +54,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     g = default_map
     u = nil
     assert_nothing_raised { u = g.url }
-    assert_equal 6, u.split("&").length
+    assert_equal 7, u.split("&").length, u
     assert u.include?("size=600x400"), "width and height did not get converted in to a size"
     assert u.include?("maptype=hybrid")
     assert u.include?("scale=2")

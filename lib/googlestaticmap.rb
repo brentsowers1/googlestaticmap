@@ -75,7 +75,10 @@ class GoogleStaticMap
   # to true, defaults to false
   attr_accessor :sensor
 
-  # 1, 2, or 4 for Maps API Premier customers
+  # 1, 2, or 4 for Maps API Premier customers. Defaults to 1. Makes everything
+  # in the image appear larger, useful for displaying on high res mobile
+  # screens.  When setting this, the image's actual width and height in pixels
+  # will be scale * width and scale * height
   attr_accessor :scale
 
   # format of the image:
@@ -113,7 +116,6 @@ class GoogleStaticMap
               ["markers", "paths", "width", "height", "center"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
-    attrs << ["scale", @scale] unless @scale.nil?
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
     attrs << ["center", center.to_s] if !center.nil?
