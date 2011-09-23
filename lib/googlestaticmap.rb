@@ -6,7 +6,7 @@
 #
 # Class for generating URLs for and downloading static maps from the Google Maps
 # Static API service.  GoogleStaticMap is the main class to use, instantiate it,
-# set the attributes to what you want, and call full_url on the instance to get 
+# set the attributes to what you want, and call full_url on the instance to get
 # the URL to download the map from.  You can also call get_map to actually
 # download the map from Google, return the bytes, and optionally write the
 # image to a file.
@@ -75,6 +75,9 @@ class GoogleStaticMap
   # to true, defaults to false
   attr_accessor :sensor
 
+  # 1, 2, or 4 for Maps API Premier customers
+  attr_accessor :scale
+
   # format of the image:
   # * png8 - 8 bit PNG (default)
   # * png32 - 32 bit PNG
@@ -110,6 +113,7 @@ class GoogleStaticMap
               ["markers", "paths", "width", "height", "center"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
+    attrs << ["scale", @scale] unless @scale.nil?
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
     attrs << ["center", center.to_s] if !center.nil?
@@ -208,7 +212,7 @@ class MapMarker
     s = attrs.to_a.collect do |k|
       # If the icon URL is URL encoded, it won't work
       val = (k[0] == "icon" ? k[1] : CGI.escape(k[1].to_s))
-      "#{k[0]}:#{val}"      
+      "#{k[0]}:#{val}"
     end.join("|")
     s << "|#{@location.to_s}"
   end

@@ -57,6 +57,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_equal 6, u.split("&").length
     assert u.include?("size=600x400"), "width and height did not get converted in to a size"
     assert u.include?("maptype=hybrid")
+    assert u.include?("scale=2")
     assert u.include?("asdf")
     assert u.include?("http://maps.google.com")
     assert u.include?("color:0x00FF00FF|fillcolor:0x00FF0060|38.8,-77.5|38.8,-76.9|39.2,-76.9|39.2,-77.5|38.8,-77.5"), "Polygon not in URL"
@@ -105,7 +106,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
       g.get_map
     end
   end
-  
+
   def test_get_map_nothing
     MockHttp.any_instance.expects(:get2).returns(nil)
     Net::HTTP.expects(:new).returns(MockHttp.new)
@@ -128,6 +129,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
                         :markers => [MapMarker.new(:location => MapLocation.new(:address => "asdf"))],
                         :center => MapLocation.new(:address => "Washington, DC"),
                         :paths => [poly],
+                        :scale => 2,
                         :maptype => "hybrid")
   end
 end
