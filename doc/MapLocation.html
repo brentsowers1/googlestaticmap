@@ -230,7 +230,7 @@ ignored if latitude and longitude are set.</p>
             
             <div class="method-source-code" id="new-source">
 <pre>
-<span class="ruby-comment"># File lib/googlestaticmap.rb, line 159</span>
+<span class="ruby-comment"># File lib/googlestaticmap.rb, line 165</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">attrs</span>={})
   <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{k}=&quot;</span>.<span class="ruby-identifier">to_sym</span>,<span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_s</span>)}
 <span class="ruby-keyword">end</span></pre>
@@ -269,7 +269,7 @@ ignored if latitude and longitude are set.</p>
             
             <div class="method-source-code" id="to_s-source">
 <pre>
-<span class="ruby-comment"># File lib/googlestaticmap.rb, line 163</span>
+<span class="ruby-comment"># File lib/googlestaticmap.rb, line 169</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">latitude</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">longitude</span>
     <span class="ruby-node">&quot;#{CGI.escape(latitude.to_s)},#{CGI.escape(longitude.to_s)}&quot;</span>

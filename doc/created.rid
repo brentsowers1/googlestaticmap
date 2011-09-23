@@ -1,12 +1,12 @@
-Thu, 21 Jul 2011 21:45:29 -0400
+Fri, 23 Sep 2011 15:51:30 -0400
 ./test/tc_map_path_and_polygon.rb	Sat, 21 Aug 2010 14:43:17 -0400
 ./test/tc_map_location.rb	Sat, 21 Aug 2010 15:54:13 -0400
-./test/tc_google_static_map.rb	Thu, 21 Jul 2011 21:42:40 -0400
+./test/tc_google_static_map.rb	Fri, 23 Sep 2011 15:16:05 -0400
 ./test/tc_helper.rb	Sat, 21 Aug 2010 15:54:13 -0400
 ./test/tc_map_marker.rb	Sat, 21 Aug 2010 15:54:13 -0400
 ./googlestaticmap.rb	Thu, 21 Jul 2011 21:41:59 -0400
 ./README	Thu, 21 Jul 2011 21:41:59 -0400
 ./Rakefile	Sat, 21 Aug 2010 15:42:11 -0400
 ./History.txt	Thu, 21 Jul 2011 21:44:02 -0400
-./lib/googlestaticmap.rb	Thu, 21 Jul 2011 21:42:40 -0400
+./lib/googlestaticmap.rb	Fri, 23 Sep 2011 15:20:59 -0400
 ./lib/googlestaticmap_helper.rb	Sat, 21 Aug 2010 12:39:20 -0400
