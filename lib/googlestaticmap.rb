@@ -95,11 +95,17 @@ class GoogleStaticMap
   # * terrain
   # * hybrid - satellite imagery with roads
   attr_accessor :maptype
+  
+  # Proxy values
+  attr_accessor :proxy_address
+  attr_accessor :proxy_port
 
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],
-                :sensor => false, :maptype => "roadmap", :paths => []}
+                :sensor => false, :maptype => "roadmap", :paths => [],
+                :proxy_port => nil, :proxy_address => nil,}
+                
     attributes = defaults.merge(attrs)
     attributes.each {|k,v| self.send("#{k}=".to_sym,v)}
   end
@@ -132,7 +138,7 @@ class GoogleStaticMap
   # Optionally, pass it an output name and the contents will get written to
   # this file name
   def get_map(output_file=nil)
-    http = Net::HTTP.new("maps.google.com", 80)
+    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.google.com", 80)
     resp, data = http.get2(relative_url)
     if resp && resp.is_a?(Net::HTTPSuccess)
       if output_file
