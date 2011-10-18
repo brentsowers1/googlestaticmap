@@ -43,6 +43,10 @@ map.gif:
   map.paths << poly
   map.get_map("map.gif")
 
+=== Working from behind a proxy 
+map = GoogleStaticMap.new(:proxy_address=>'my.proxy.host', :proxy_port=>8080, :width => 640, :height => 480)
+
+
 Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
 License:: You're free to do whatever you want with this
 
