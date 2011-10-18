@@ -40,6 +40,9 @@
 #   map.paths << poly
 #   map.get_map("map.gif")
 #
+# If you're working behind a proxy, create the map object this way:
+# map = GoogleStaticMap.new(:proxy_address=>'my.proxy.host', :proxy_port=>8080, :width => 640, :height => 480)
+#
 # Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
 # License:: You're free to do whatever you want with this
 
@@ -96,8 +99,11 @@ class GoogleStaticMap
   # * hybrid - satellite imagery with roads
   attr_accessor :maptype
   
-  # Proxy values
+  # If you need to use a proxy server to reach Google, set the name/address
+  # of the proxy server here
   attr_accessor :proxy_address
+
+  # If proxy_address is set, set this to the port of the proxy server
   attr_accessor :proxy_port
 
   # Takes an optional hash of attributes
@@ -119,7 +125,8 @@ class GoogleStaticMap
     end
     u = "http://maps.google.com/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
-              ["markers", "paths", "width", "height", "center"],
+              ["markers", "paths", "width", "height", "center",
+               "proxy_address", "proxy_port"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     markers.each {|m| attrs << ["markers",m.to_s] }
