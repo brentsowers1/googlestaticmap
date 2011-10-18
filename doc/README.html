@@ -133,6 +133,10 @@ poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 39.2, :longitude =&gt; -77.
 poly.points &lt;&lt; MapLocation.new(:latitude =&gt; 38.8, :longitude =&gt; -77.5)
 map.paths &lt;&lt; poly
 map.get_map(&quot;map.gif&quot;)</pre>
+
+<p>If you’re working behind a proxy, create the map object this way:</p>
+
+<pre>map = GoogleStaticMap.new(:proxy_address=&gt;'my.proxy.host', :proxy_port=&gt;8080, :width =&gt; 640, :height =&gt; 480)</pre>
 <table class="rdoc-list"><tr><td class="rdoc-term"><p>Author</p></td>
 <td>
 <p>Brent Sowers (<a
