@@ -119,11 +119,13 @@ class GoogleStaticMap
   # Returns the full URL to retrieve this static map.  You can use this as the
   # src for an img to display an image directly on a web page
   # Example - "http://maps.google.com/maps/api/staticmap?params..."
-  def url
+  # +protocol+ can be 'http', 'https' or :auto (aka: use //maps.google.com)
+  def url(protocol = 'http')
     unless @center || @markers.length > 0 || @paths.length > 0
       raise Exception.new("Need to specify either a center, markers, or a path")
     end
-    u = "http://maps.google.com/maps/api/staticmap?"
+    protocol = if protocol == :auto then '' else "#{protocol}:" end
+    u = "#{protocol}//maps.google.com/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
                "proxy_address", "proxy_port"],
@@ -138,7 +140,7 @@ class GoogleStaticMap
   # Returns the URL to retrieve the map, relative to http://maps.google.com
   # Example - "/maps/api/staticmap?params..."
   def relative_url
-    url.gsub(/http\:\/\/maps\.google\.com/, "")
+    url.gsub(/[^\/]*\/\/maps\.google\.com/, "")
   end
 
   # Connects to Google, retrieves the map, and returns the bytes for the image.

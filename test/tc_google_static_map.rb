@@ -68,6 +68,28 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert !f.include?("http://maps.google.com")
   end
 
+  def test_url_auto
+    g = default_map
+    u = nil
+    assert_nothing_raised { u = g.url(:auto) }
+    assert_equal 7, u.split("&").length, u
+    assert u =~ /^\/\/maps.google.com/
+    f = nil
+    assert_nothing_raised {f = g.relative_url}
+    assert_no_match /^\/\/maps.google.com/, f
+  end
+
+  def test_url_https
+    g = default_map
+    u = nil
+    assert_nothing_raised { u = g.url('https') }
+    assert_equal 7, u.split("&").length, u
+    assert u =~ /^https:\/\/maps.google.com/
+    f = nil
+    assert_nothing_raised {f = g.relative_url}
+    assert_no_match /^https:\/\/maps.google.com/, f
+  end
+
   def test_get_map_success_no_file
     test_data = "asdf"
     MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
