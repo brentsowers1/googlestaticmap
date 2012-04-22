@@ -1,6 +1,6 @@
 # = googlestaticmap gem
 #
-# This gem is on Gemcutter, simply type "gem install googlestaticmap" to install it.
+# This gem is on Rubygems, simply type "gem install googlestaticmap" to install it.
 #
 # Available on github at http://github.com/brentsowers1/googlestaticmap
 #
@@ -17,6 +17,12 @@
 # (500 x 350), zoomed to level 11
 #   map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
 #   image = map.get_map
+#
+# Get the URL of the image described in the previous example, so you can insert
+# this URL as the src of an img element on an HTML page
+#   require 'googlestaticmap'
+#  map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
+#  image_url = map.url(:auto)
 #
 # Get a map with blue markers at the White House and the Supreme Court, zoomed
 # the closest that the map can be with both markers visible, at the default
@@ -45,6 +51,9 @@
 #
 # Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
 # License:: You're free to do whatever you want with this
+#
+# To post comments about this gem, go to my blog posting at
+# http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html
 
 require 'cgi'
 require 'net/http'
@@ -119,12 +128,17 @@ class GoogleStaticMap
   # Returns the full URL to retrieve this static map.  You can use this as the
   # src for an img to display an image directly on a web page
   # Example - "http://maps.google.com/maps/api/staticmap?params..."
-  # +protocol+ can be 'http', 'https' or :auto (aka: use //maps.google.com)
-  def url(protocol = 'http')
+  # +protocol+ can be 'http', 'https' or :auto. Specifying :auto will not return
+  #   a protocol in the URL ("//maps.google.com/..."), allowing the browser to
+  #   select the appropriate protocol (if the page is loaded with https, it will
+  #   use https). Defaults to http
+  def url(protocol='http')
     unless @center || @markers.length > 0 || @paths.length > 0
       raise Exception.new("Need to specify either a center, markers, or a path")
     end
-    protocol = if protocol == :auto then '' else "#{protocol}:" end
+    protocol = 'http' unless protocol == 'http' || protocol == 'https' ||
+                             protocol == :auto
+    protocol = protocol == :auto ? '' : protocol + ":"
     u = "#{protocol}//maps.google.com/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
@@ -139,16 +153,23 @@ class GoogleStaticMap
 
   # Returns the URL to retrieve the map, relative to http://maps.google.com
   # Example - "/maps/api/staticmap?params..."
-  def relative_url
-    url.gsub(/[^\/]*\/\/maps\.google\.com/, "")
+  def relative_url(protocol='http')
+    url(protocol).gsub(/[^\/]*\/\/maps\.google\.com/, "")
   end
+
 
   # Connects to Google, retrieves the map, and returns the bytes for the image.
   # Optionally, pass it an output name and the contents will get written to
   # this file name
-  def get_map(output_file=nil)
+  # +output_file+ - optionally give the name of a file to write the output to.
+  #                 Pass nil to not write the output to a file
+  # +protocol+ - specify http or https here for the protocol to retrieve the
+  #              map with. Defaults to http
+  # return value - the binary data for the map
+  def get_map(output_file=nil, protocol='http')
+    protocol = 'http' unless protocol == 'http' || protocol = 'https'
     http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.google.com", 80)
-    resp, data = http.get2(relative_url)
+    resp, data = http.get2(relative_url(protocol))
     if resp && resp.is_a?(Net::HTTPSuccess)
       if output_file
         File.open(output_file, "wb") {|f| f << data }

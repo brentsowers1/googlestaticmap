@@ -1,3 +1,6 @@
+=== 1.1.1 / 2012-04-22
+* Added support for specifying the protocol to use (thanks andruby!)
+
 === 1.1.0 / 2011-10-18
 * Added an option to make requests through a proxy server (thanks bardsley!)
 

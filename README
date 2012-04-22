@@ -1,6 +1,6 @@
 = googlestaticmap gem
 
-This gem is on Gemcutter, simply type "gem install googlestaticmap" to install it.
+This gem is on Rubygems, simply type "gem install googlestaticmap" to install it.
 
 Available on github at http://github.com/brentsowers1/googlestaticmap
 
@@ -14,14 +14,20 @@ image to a file.
 == Examples:
 
 Get a simple static map centered at Washington, DC, with the default size
-(500 x 350), zoomed to level 11
+(500 x 350), zoomed to level 11.  image will be the binary data of the map
   require 'googlestaticmap'
   map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
   image = map.get_map
 
+Get the URL of the image described in the previous example, so you can insert
+this URL as the src of an img element on an HTML page
+  require 'googlestaticmap'
+  map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
+  image_url = map.url(:auto)
+
 Get a map with blue markers at the White House and the Supreme Court, zoomed
 the closest that the map can be with both markers visible, at the default
-size.
+size.  image will be the binary data of the map
   require 'googlestaticmap'
   map = GoogleStaticMap.new
   map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:address => "1600 Pennsylvania Ave., Washington, DC"))
@@ -51,4 +57,4 @@ Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
 License:: You're free to do whatever you want with this
 
 To post comments about this gem, go to my blog posting at
-http://rails.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html
+http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html

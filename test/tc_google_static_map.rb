@@ -73,7 +73,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
     assert_nothing_raised { u = g.url(:auto) }
     assert_equal 7, u.split("&").length, u
-    assert u =~ /^\/\/maps.google.com/
+    assert u =~ /^\/\/maps.google.com/, u
     f = nil
     assert_nothing_raised {f = g.relative_url}
     assert_no_match /^\/\/maps.google.com/, f
