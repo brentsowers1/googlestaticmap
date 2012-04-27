@@ -24,6 +24,9 @@ end
 class MockHttp #:nodoc: all
   def initialize
   end
+  def use_ssl=(value)
+    true
+  end
 end
 
 class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
@@ -90,9 +93,10 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_no_match /^https:\/\/maps.google.com/, f
   end
 
-  def test_get_map_success_no_file
+  def test_get_map_success_no_file_http
     test_data = "asdf"
     MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    MockHttp.any_instance.expects(:"use_ssl=").with(false).returns(false)
     Net::HTTP.expects(:new).returns(MockHttp.new)
 
     g = default_map
@@ -101,7 +105,37 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_equal r, test_data
   end
 
+  def test_get_map_success_no_file_https
+    test_data = "asdf"
+    MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    MockHttp.any_instance.expects(:"use_ssl=").with(true).returns(true)
+    Net::HTTP.expects(:new).returns(MockHttp.new)
+
+    g = default_map
+    r = nil
+    assert_nothing_raised {r = g.get_map(nil, 'https')}
+    assert_equal r, test_data
+  end
+
   def test_get_map_success_write_file
+    test_data = "asdf"
+    MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    Net::HTTP.expects(:new).returns(MockHttp.new)
+    file_data = ""
+    file_name = "testdata.png"
+    # File.open should be called, with the name of the file and write binary
+    # passed in.  The object passed to the yield should be a file object that
+    # gets the test data appended to it.  If we sub out a string for the
+    # file object we can later check the contents
+    File.expects(:open).with(file_name, "wb").yields(file_data)
+    g = default_map
+    r = nil
+    assert_nothing_raised {r = g.get_map(file_name)}
+    assert_equal r, test_data
+    assert_equal file_data, test_data
+  end
+
+  def test_get_map_success_check_url
     test_data = "asdf"
     MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
     Net::HTTP.expects(:new).returns(MockHttp.new)

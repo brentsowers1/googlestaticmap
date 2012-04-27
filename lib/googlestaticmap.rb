@@ -167,8 +167,11 @@ class GoogleStaticMap
   #              map with. Defaults to http
   # return value - the binary data for the map
   def get_map(output_file=nil, protocol='http')
-    protocol = 'http' unless protocol == 'http' || protocol = 'https'
-    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.google.com", 80)
+    protocol = 'http' unless protocol == 'http' || protocol == 'https'
+    port = protocol == 'https' ? 443 : 80
+    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.google.com", port)
+    http.use_ssl = protocol == 'https'
+
     resp, data = http.get2(relative_url(protocol))
     if resp && resp.is_a?(Net::HTTPSuccess)
       if output_file

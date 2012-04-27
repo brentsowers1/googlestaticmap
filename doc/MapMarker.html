@@ -251,7 +251,7 @@ mid</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/googlestaticmap.rb, line 243</span>
+            <pre><span class="ruby-comment"># File lib/googlestaticmap.rb, line 246</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">attrs</span>={})
   <span class="ruby-identifier">attrs</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;#{k}=&quot;</span>.<span class="ruby-identifier">to_sym</span>,<span class="ruby-identifier">v</span>)}
 <span class="ruby-keyword">end</span></pre>
@@ -287,7 +287,7 @@ mid</p>
 
           
           <div class="method-source-code" id="to_s-source">
-            <pre><span class="ruby-comment"># File lib/googlestaticmap.rb, line 247</span>
+            <pre><span class="ruby-comment"># File lib/googlestaticmap.rb, line 250</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;Need a location for the marker&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@location</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@location</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">MapLocation</span>)
   <span class="ruby-identifier">attrs</span> = <span class="ruby-constant">GoogleStaticMapHelpers</span>.<span class="ruby-identifier">safe_instance_variables</span>(<span class="ruby-keyword">self</span>, [<span class="ruby-string">&quot;location&quot;</span>])
