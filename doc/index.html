@@ -81,7 +81,86 @@
   </div>
 </nav>
 
-<p>This is the API documentation for RDoc Documentation.
+<div id="documentation" class="description">
+  
+<h1 id="label-googlestaticmap+gem">googlestaticmap gem</h1>
+
+<p>This gem is on Rubygems, simply type “gem install googlestaticmap” to
+install it.</p>
+
+<p>Available on github at <a
+href="http://github.com/brentsowers1/googlestaticmap">github.com/brentsowers1/googlestaticmap</a></p>
+
+<p>Class for generating URLs for and downloading static maps from the Google
+Maps Static API service.  <a
+href="GoogleStaticMap.html">GoogleStaticMap</a> is the main class to use,
+instantiate it, set the attributes to what you want, and call url on the
+instance to get the URL to download the map from.  You can also call
+get_map to actually download the map from Google, return the bytes, and
+optionally write the image to a file.</p>
+
+<h2 id="label-Examples%3A">Examples:</h2>
+
+<p>Get a simple static map centered at Washington, DC, with the default size
+(500 x 350), zoomed to level 11.  image will be the binary data of the map</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'googlestaticmap'</span>
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">GoogleStaticMap</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">zoom</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">11</span>, :<span class="ruby-identifier">center</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">address</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Washington, DC&quot;</span>))
+<span class="ruby-identifier">image</span> = <span class="ruby-identifier">map</span>.<span class="ruby-identifier">get_map</span>
+</pre>
+
+<p>Get the URL of the image described in the previous example, so you can
+insert this URL as the src of an img element on an HTML page</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'googlestaticmap'</span>
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">GoogleStaticMap</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">zoom</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">11</span>, :<span class="ruby-identifier">center</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">address</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Washington, DC&quot;</span>))
+<span class="ruby-identifier">image_url</span> = <span class="ruby-identifier">map</span>.<span class="ruby-identifier">url</span>(:<span class="ruby-identifier">auto</span>)
+</pre>
+
+<p>Get a map with blue markers at the White House and the Supreme Court,
+zoomed the closest that the map can be with both markers visible, at the
+default size.  image will be the binary data of the map</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'googlestaticmap'</span>
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">GoogleStaticMap</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">markers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapMarker</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;blue&quot;</span>, :<span class="ruby-identifier">location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">address</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;1600 Pennsylvania Ave., Washington, DC&quot;</span>))
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">markers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapMarker</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;blue&quot;</span>, :<span class="ruby-identifier">location</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">address</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;1 1st Street Northeast, Washington, DC&quot;</span>))
+<span class="ruby-identifier">image</span> = <span class="ruby-identifier">map</span>.<span class="ruby-identifier">get_map</span>
+</pre>
+
+<p>Get a GIF satellite map, with a size of 640 x 480, with a semi transparent
+green box drawn around a set of 4 coordinates, with the box outline solid,
+centered at the middle of the box, written out to the file map.gif:</p>
+
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">'googlestaticmap'</span>
+<span class="ruby-identifier">map</span> = <span class="ruby-constant">GoogleStaticMap</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">maptype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;satellite&quot;</span>, :<span class="ruby-identifier">format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;gif&quot;</span>, :<span class="ruby-identifier">width</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">640</span>, :<span class="ruby-identifier">height</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">480</span>)
+<span class="ruby-identifier">poly</span> = <span class="ruby-constant">MapPolygon</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;0x00FF00FF&quot;</span>, :<span class="ruby-identifier">fillcolor</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;0x00FF0060&quot;</span>)
+<span class="ruby-identifier">poly</span>.<span class="ruby-identifier">points</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">latitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">38.8</span>, :<span class="ruby-identifier">longitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">-77.5</span>)
+<span class="ruby-identifier">poly</span>.<span class="ruby-identifier">points</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">latitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">38.8</span>, :<span class="ruby-identifier">longitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">-76.9</span>)
+<span class="ruby-identifier">poly</span>.<span class="ruby-identifier">points</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">latitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">39.2</span>, :<span class="ruby-identifier">longitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">-76.9</span>)
+<span class="ruby-identifier">poly</span>.<span class="ruby-identifier">points</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">latitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">39.2</span>, :<span class="ruby-identifier">longitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">-77.5</span>)
+<span class="ruby-identifier">poly</span>.<span class="ruby-identifier">points</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">MapLocation</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">latitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">38.8</span>, :<span class="ruby-identifier">longitude</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">-77.5</span>)
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">paths</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">poly</span>
+<span class="ruby-identifier">map</span>.<span class="ruby-identifier">get_map</span>(<span class="ruby-string">&quot;map.gif&quot;</span>)
+</pre>
+
+<p>If you’re working behind a proxy, create the map object this way:</p>
+
+<pre class="ruby"><span class="ruby-identifier">map</span> = <span class="ruby-constant">GoogleStaticMap</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">proxy_address=</span><span class="ruby-operator">&gt;</span><span class="ruby-string">'my.proxy.host'</span>, :<span class="ruby-identifier">proxy_port=</span><span class="ruby-operator">&gt;</span><span class="ruby-value">8080</span>, :<span class="ruby-identifier">width</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">640</span>, :<span class="ruby-identifier">height</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">480</span>)
+</pre>
+<dl class="rdoc-list note-list"><dt>Author
+<dd>
+<p>Brent Sowers (<a
+href="mailto:brent@coordinatecommons.com">brent@coordinatecommons.com</a>)</p>
+</dd><dt>License
+<dd>
+<p>You’re free to do whatever you want with this</p>
+</dd></dl>
+
+<p>To post comments about this gem, go to my blog posting at <a
+href="http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html">www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html</a></p>
+
+</div>
 
 
 <footer id="validator-badges">
