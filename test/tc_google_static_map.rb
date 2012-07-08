@@ -6,8 +6,13 @@ require 'mocha'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap'
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
-  def initialize
+  def initialize(data)
+    @data = data
   end
+
+  def body
+    @data
+  end	
 end
 
 class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
@@ -95,7 +100,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
   def test_get_map_success_no_file_http
     test_data = "asdf"
-    MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    MockHttp.any_instance.expects(:get2).returns(MockSuccess.new(test_data))
     MockHttp.any_instance.expects(:"use_ssl=").with(false).returns(false)
     Net::HTTP.expects(:new).returns(MockHttp.new)
 
@@ -107,7 +112,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
   def test_get_map_success_no_file_https
     test_data = "asdf"
-    MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    MockHttp.any_instance.expects(:get2).returns(MockSuccess.new(test_data))
     MockHttp.any_instance.expects(:"use_ssl=").with(true).returns(true)
     Net::HTTP.expects(:new).returns(MockHttp.new)
 
@@ -119,7 +124,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
   def test_get_map_success_write_file
     test_data = "asdf"
-    MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    MockHttp.any_instance.expects(:get2).returns(MockSuccess.new(test_data))
     Net::HTTP.expects(:new).returns(MockHttp.new)
     file_data = ""
     file_name = "testdata.png"
@@ -137,7 +142,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
   def test_get_map_success_check_url
     test_data = "asdf"
-    MockHttp.any_instance.expects(:get2).returns([MockSuccess.new,test_data])
+    MockHttp.any_instance.expects(:get2).returns(MockSuccess.new(test_data))
     Net::HTTP.expects(:new).returns(MockHttp.new)
     file_data = ""
     file_name = "testdata.png"
@@ -155,7 +160,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
 
   def test_get_map_failure
-    MockHttp.any_instance.expects(:get2).returns([MockFailure.new,""])
+    MockHttp.any_instance.expects(:get2).returns(MockFailure.new)
     Net::HTTP.expects(:new).returns(MockHttp.new)
     g = default_map
     assert_raise Exception do
