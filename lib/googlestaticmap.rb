@@ -57,6 +57,7 @@
 
 require 'cgi'
 require 'net/http'
+require 'net/https' if RUBY_VERSION < "1.9"
 require File.dirname(__FILE__) +  '/googlestaticmap_helper'
 
 # Main class for creating a static map.  Create an instance, Set attributes
