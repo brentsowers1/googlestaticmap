@@ -30,10 +30,15 @@ class MapPathAndPolygonTest < Test::Unit::TestCase #:nodoc: all
     p = default_path
     s = nil
     assert_nothing_raised { s = p.to_s }
-    assert_equal 4, s.split("|").length
+    assert_equal 4, s.split(MAP_SEPARATOR).length
     assert s.include?("color:0xFF0000FF")
     assert s.include?("loc1")
     assert s.include?("loc2")
+  end
+
+  def test_string_is_a_valid_ruby_uri
+    m = default_path
+    URI.parse(m.to_s)
   end
 
   def test_polygon

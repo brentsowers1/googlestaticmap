@@ -60,6 +60,8 @@ require 'net/http'
 require 'net/https' if RUBY_VERSION < "1.9"
 require File.dirname(__FILE__) +  '/googlestaticmap_helper'
 
+MAP_SEPARATOR = CGI.escape("|")
+
 # Main class for creating a static map.  Create an instance, Set attributes
 # that describe properties of the map.  Then call url to get a URL that you
 # can use as the src of an img tag.  You can also call get_map to actually
@@ -108,7 +110,7 @@ class GoogleStaticMap
   # * terrain
   # * hybrid - satellite imagery with roads
   attr_accessor :maptype
-  
+
   # If you need to use a proxy server to reach Google, set the name/address
   # of the proxy server here
   attr_accessor :proxy_address
@@ -121,7 +123,7 @@ class GoogleStaticMap
     defaults = {:width => 500, :height => 350, :markers => [],
                 :sensor => false, :maptype => "roadmap", :paths => [],
                 :proxy_port => nil, :proxy_address => nil,}
-                
+
     attributes = defaults.merge(attrs)
     attributes.each {|k,v| self.send("#{k}=".to_sym,v)}
   end
@@ -255,8 +257,8 @@ class MapMarker
       # If the icon URL is URL encoded, it won't work
       val = (k[0] == "icon" ? k[1] : CGI.escape(k[1].to_s))
       "#{k[0]}:#{val}"
-    end.join("|")
-    s << "|#{@location.to_s}"
+    end.join(MAP_SEPARATOR)
+    s << MAP_SEPARATOR << @location.to_s
   end
 end
 
@@ -285,8 +287,8 @@ class MapPath
   def to_s
     raise Exception.new("Need more than one point for the path") unless @points && @points.length > 1
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["points"])
-    s = attrs.to_a.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join("|")
-    s << "|" << @points.join("|")
+    s = attrs.to_a.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join(MAP_SEPARATOR)
+    s << MAP_SEPARATOR << @points.join(MAP_SEPARATOR)
   end
 end
 

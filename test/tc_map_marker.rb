@@ -33,10 +33,15 @@ class MapMarkerTest < Test::Unit::TestCase #:nodoc: all
     m = default_marker
     s = nil
     assert_nothing_raised {s = m.to_s}
-    assert_equal 6, s.split("|").length
+    assert_equal 6, s.split(MAP_SEPARATOR).length
     assert s.include?(CGI.escape("Washington, DC"))
     assert s.include?("color:green")
     assert s.include?("icon:http://www.google.com")
+  end
+
+  def test_string_is_a_valid_ruby_uri
+    m = default_marker
+    URI.parse(m.to_s)
   end
 
   private
