@@ -12,7 +12,7 @@ class MockSuccess < Net::HTTPSuccess #:nodoc: all
 
   def body
     @data
-  end	
+  end
 end
 
 class MockFailure < Net::HTTPServiceUnavailable #:nodoc: all
@@ -68,7 +68,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert u.include?("scale=2")
     assert u.include?("asdf")
     assert u.include?("http://maps.google.com")
-    assert u.include?("color:0x00FF00FF|fillcolor:0x00FF0060|38.8,-77.5|38.8,-76.9|39.2,-76.9|39.2,-77.5|38.8,-77.5"), "Polygon not in URL"
+    assert u.include?("color:0x00FF00FF#{MAP_SEPARATOR}fillcolor:0x00FF0060#{MAP_SEPARATOR}38.8,-77.5#{MAP_SEPARATOR}38.8,-76.9#{MAP_SEPARATOR}39.2,-76.9#{MAP_SEPARATOR}39.2,-77.5#{MAP_SEPARATOR}38.8,-77.5"), "Polygon not in URL"
     assert u.include?("Washington%2C+DC")
 
     f = nil
