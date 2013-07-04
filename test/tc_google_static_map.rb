@@ -2,7 +2,7 @@ require 'rubygems'
 require 'test/unit'
 require 'cgi'
 require 'net/http'
-require 'mocha'
+require 'mocha/setup'
 require File.dirname(__FILE__) +  '/../lib/googlestaticmap'
 
 class MockSuccess < Net::HTTPSuccess #:nodoc: all
