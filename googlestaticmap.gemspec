@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|  
   spec.name        = 'googlestaticmap'  
-  spec.version     = '1.1.3'
+  spec.version     = '1.1.4'
   spec.files       = Dir['lib/**/*', 'test/**/*', 'README', 'History.txt']
   spec.test_files  = Dir.glob('test/tc_*.rb')
   
@@ -11,5 +11,4 @@ Gem::Specification.new do |spec|
   spec.email             = 'brent@coordinatecommons.com'  
   spec.extra_rdoc_files  = ['README','History.txt']
   spec.homepage          = 'http://www.coordinatecommons.com/googlestaticmap/'
-  spec.has_rdoc          = true
-end   
+end

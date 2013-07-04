@@ -1,3 +1,6 @@
+== 1.1.4 / 2013-07-04
+* Properly URL encoding the URLs, caused an issue when using URI.parse on generated URLs (thanks nathany!)
+
 === 1.1.3 / 2012-07-08
 * Fixed a Ruby 1.9.3 compatibility issue (thanks dusanb!)
 * Fixed a Ruby 1.8.7 compatibility issue introduced in 1.1.1
