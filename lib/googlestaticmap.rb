@@ -137,9 +137,9 @@ class GoogleStaticMap
 
   # Returns the full URL to retrieve this static map.  You can use this as the
   # src for an img to display an image directly on a web page
-  # Example - "http://maps.google.com/maps/api/staticmap?params..."
+  # Example - "http://maps.googleapis.com/maps/api/staticmap?params..."
   # +protocol+ can be 'http', 'https' or :auto. Specifying :auto will not return
-  #   a protocol in the URL ("//maps.google.com/..."), allowing the browser to
+  #   a protocol in the URL ("//maps.googleapis.com/..."), allowing the browser to
   #   select the appropriate protocol (if the page is loaded with https, it will
   #   use https). Defaults to http
   def url(protocol='http')
@@ -149,7 +149,7 @@ class GoogleStaticMap
     protocol = 'http' unless protocol == 'http' || protocol == 'https' ||
                              protocol == :auto
     protocol = protocol == :auto ? '' : protocol + ":"
-    u = "#{protocol}//maps.google.com"
+    u = "#{protocol}//maps.googleapis.com"
     path = "/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
@@ -169,7 +169,7 @@ class GoogleStaticMap
     end
   end
 
-  # Returns the URL to retrieve the map, relative to http://maps.google.com
+  # Returns the URL to retrieve the map, relative to http://maps.googleapis.com
   # Example - "/maps/api/staticmap?params..."
   def relative_url(protocol='http')
     url(protocol).gsub(/[^\/]*\/\/maps\.google\.com/, "")
@@ -187,7 +187,7 @@ class GoogleStaticMap
   def get_map(output_file=nil, protocol='http')
     protocol = 'http' unless protocol == 'http' || protocol == 'https'
     port = protocol == 'https' ? 443 : 80
-    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.google.com", port)
+    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.googleapis.com", port)
     http.use_ssl = protocol == 'https'
 
     resp = http.get2(relative_url(protocol))
