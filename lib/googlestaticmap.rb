@@ -210,7 +210,7 @@ class GoogleStaticMap
   # signing code is grabbed from https://github.com/alexreisner/geocoder
   def sign(path)
     raw_private_key = url_safe_base64_decode(private_key)
-    digest = OpenSSL::Digest::Digest.new('sha1')
+    digest = OpenSSL::Digest.new('sha1')
     raw_signature = OpenSSL::HMAC.digest(digest, raw_private_key, path)
     url_safe_base64_encode(raw_signature)
   end
