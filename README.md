@@ -59,6 +59,7 @@ If you're working behind a proxy, create the map object this way:
 
 
 Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
+
 License:: You're free to do whatever you want with this
 
 To post comments about this gem, go to my blog posting at
