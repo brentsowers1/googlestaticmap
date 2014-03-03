@@ -1,3 +1,8 @@
+== 1.2.0 / 2014-03-03
+* Added support for setting an API key for monitoring, and a client ID/private key for business customers (thanks forrest!)
+* Changed to use maps.googleapis.com instead of maps.google.com (thanks nathany!)
+* Explicitly added MIT licensing
+
 == 1.1.4 / 2013-07-04
 * Properly URL encoding the URLs, caused an issue when using URI.parse on generated URLs (thanks nathany!)
 

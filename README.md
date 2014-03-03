@@ -57,10 +57,29 @@ If you're working behind a proxy, create the map object this way:
 
     map = GoogleStaticMap.new(:proxy_address=>'my.proxy.host', :proxy_port=>8080, :width => 640, :height => 480)
 
+If you have a public API key for tracking usage (https://developers.google.com/maps/documentation/staticmaps/#api_key):
 
-Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
+    map = GoogleStaticMap.new(:api_key => "my_api_key")
 
-License:: You're free to do whatever you want with this
+If you are a Maps For Businesses customer with a client ID and private key (https://developers.google.com/maps/documentation/business/webservices/#client_id)
+(note that you cannot set an api_key if you want to use client_id and private_key):
 
-To post comments about this gem, go to my blog posting at
-http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html
+    map = GoogleStaticMap.new(:client_id => "my_client_id", :private_key => "my_private_key")
+
+## Compatibility
+
+This has been tested and is working with Ruby 1.8.7, 1.9.3, 2.0.0, and 2.1.1, and JRuby 1.7.11.
+
+## Author
+
+Brent Sowers (mailto:brent@coordinatecommons.com)
+
+## Feedback
+
+To post comments about this gem, go to my blog posting at http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html. Contributions are also welcome! Fork the repo and issue a pull request, and I'll review it.
+
+## License
+
+googlestaticmap is released under the [MIT License](http://www.opensource.org/licenses/MIT). You're free to do whatever you want with this.
+
+
