@@ -118,11 +118,18 @@ class GoogleStaticMap
   # If proxy_address is set, set this to the port of the proxy server
   attr_accessor :proxy_port
 
+  # Key - see https://developers.google.com/maps/documentation/staticmaps/#api_key for details
+  attr_accessor :key
+
+  # ClientId/PrivateKey - see https://developers.google.com/maps/documentation/business/webservices/auth#generating_valid_signatures for details
+  attr_accessor :client
+  attr_accessor :private_key
+
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],
                 :sensor => false, :maptype => "roadmap", :paths => [],
-                :proxy_port => nil, :proxy_address => nil,}
+                :proxy_port => nil, :proxy_address => nil}
 
     attributes = defaults.merge(attrs)
     attributes.each {|k,v| self.send("#{k}=".to_sym,v)}
@@ -130,9 +137,9 @@ class GoogleStaticMap
 
   # Returns the full URL to retrieve this static map.  You can use this as the
   # src for an img to display an image directly on a web page
-  # Example - "http://maps.google.com/maps/api/staticmap?params..."
+  # Example - "http://maps.googleapis.com/maps/api/staticmap?params..."
   # +protocol+ can be 'http', 'https' or :auto. Specifying :auto will not return
-  #   a protocol in the URL ("//maps.google.com/..."), allowing the browser to
+  #   a protocol in the URL ("//maps.googleapis.com/..."), allowing the browser to
   #   select the appropriate protocol (if the page is loaded with https, it will
   #   use https). Defaults to http
   def url(protocol='http')
@@ -142,19 +149,27 @@ class GoogleStaticMap
     protocol = 'http' unless protocol == 'http' || protocol == 'https' ||
                              protocol == :auto
     protocol = protocol == :auto ? '' : protocol + ":"
-    u = "#{protocol}//maps.google.com/maps/api/staticmap?"
+    u = "#{protocol}//maps.googleapis.com"
+    path = "/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
-               "proxy_address", "proxy_port"],
+               "proxy_address", "proxy_port", "key", "private_key"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     markers.each {|m| attrs << ["markers",m.to_s] }
     paths.each {|p| attrs << ["path",p.to_s] }
     attrs << ["center", center.to_s] if !center.nil?
-    u << attrs.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
+    path << attrs.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
+    if key
+      u << path << "&key=" << key
+    elsif client && private_key
+      u << path << "&signature=" << sign(path)
+    else
+      u << path
+    end
   end
 
-  # Returns the URL to retrieve the map, relative to http://maps.google.com
+  # Returns the URL to retrieve the map, relative to http://maps.googleapis.com
   # Example - "/maps/api/staticmap?params..."
   def relative_url(protocol='http')
     url(protocol).gsub(/[^\/]*\/\/maps\.google\.com/, "")
@@ -172,7 +187,7 @@ class GoogleStaticMap
   def get_map(output_file=nil, protocol='http')
     protocol = 'http' unless protocol == 'http' || protocol == 'https'
     port = protocol == 'https' ? 443 : 80
-    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.google.com", port)
+    http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.googleapis.com", port)
     http.use_ssl = protocol == 'https'
 
     resp = http.get2(relative_url(protocol))
@@ -189,6 +204,25 @@ class GoogleStaticMap
       end
     end
   end
+
+  private
+
+  # signing code is grabbed from https://github.com/alexreisner/geocoder
+  def sign(path)
+    raw_private_key = url_safe_base64_decode(private_key)
+    digest = OpenSSL::Digest.new('sha1')
+    raw_signature = OpenSSL::HMAC.digest(digest, raw_private_key, path)
+    url_safe_base64_encode(raw_signature)
+  end
+
+  def url_safe_base64_decode(base64_string)
+    Base64.decode64(base64_string.tr('-_', '+/'))
+  end
+
+  def url_safe_base64_encode(raw)
+    Base64.encode64(raw).tr('+/', '-_').strip
+  end
+
 end
 
 # Container class for a location on the map.  Set either a latitude and
