@@ -58,9 +58,16 @@ If you're working behind a proxy, create the map object this way:
     map = GoogleStaticMap.new(:proxy_address=>'my.proxy.host', :proxy_port=>8080, :width => 640, :height => 480)
 
 
-Author:: Brent Sowers (mailto:brent@coordinatecommons.com)
+## Author
 
-License:: You're free to do whatever you want with this
+Brent Sowers (mailto:brent@coordinatecommons.com)
 
-To post comments about this gem, go to my blog posting at
-http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html
+## Feedback
+
+To post comments about this gem, go to my blog posting at http://www.brentsowers.com/2010/08/gem-for-getting-google-static-maps.html. Contributions are also welcome! Fork the repo and issue a pull request, and I'll review it.
+
+## License
+
+googlestaticmap is released under the [MIT License](http://www.opensource.org/licenses/MIT). You're free to do whatever you want with this.
+
+
