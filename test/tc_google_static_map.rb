@@ -67,13 +67,17 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert u.include?("maptype=hybrid")
     assert u.include?("scale=2")
     assert u.include?("asdf")
-    assert u.include?("http://maps.google.com")
-    assert u.include?("color:0x00FF00FF#{MAP_SEPARATOR}fillcolor:0x00FF0060#{MAP_SEPARATOR}38.8,-77.5#{MAP_SEPARATOR}38.8,-76.9#{MAP_SEPARATOR}39.2,-76.9#{MAP_SEPARATOR}39.2,-77.5#{MAP_SEPARATOR}38.8,-77.5"), "Polygon not in URL"
+    assert u.include?("http://maps.googleapis.com")
+    assert u.include?("color:0x00FF00FF")
+    assert u.include?("fillcolor:0x00FF0060")
+    assert u.include?("38.8,-77.5#{MAP_SEPARATOR}38.8,-76.9#{MAP_SEPARATOR}39.2,-76.9#{MAP_SEPARATOR}39.2,-77.5#{MAP_SEPARATOR}38.8,-77.5"), "Polygon not in URL - #{u}"
     assert u.include?("Washington%2C+DC")
+    assert !u.include?("key"), "API included when it shouldn't be"
+    assert !u.include?("client"), "Client included when it shouldn't be"
 
     f = nil
     assert_nothing_raised {f = g.relative_url}
-    assert !f.include?("http://maps.google.com")
+    assert !f.include?("http://maps.googleapis.com")
   end
 
   def test_url_auto
@@ -81,10 +85,10 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
     assert_nothing_raised { u = g.url(:auto) }
     assert_equal 7, u.split("&").length, u
-    assert u =~ /^\/\/maps.google.com/, u
+    assert u =~ /^\/\/maps.googleapis.com/, u
     f = nil
     assert_nothing_raised {f = g.relative_url}
-    assert_no_match /^\/\/maps.google.com/, f
+    assert_no_match /^\/\/maps.googleapis.com/, f
   end
 
   def test_url_https
@@ -92,10 +96,44 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
     assert_nothing_raised { u = g.url('https') }
     assert_equal 7, u.split("&").length, u
-    assert u =~ /^https:\/\/maps.google.com/
+    assert u =~ /^https:\/\/maps.googleapis.com/
     f = nil
     assert_nothing_raised {f = g.relative_url}
-    assert_no_match /^https:\/\/maps.google.com/, f
+    assert_no_match /^https:\/\/maps.googleapis.com/, f
+  end
+
+  def test_url_api_key
+    g = default_map
+    g.api_key = "asdfapikey"
+    u = nil
+    assert_nothing_raised { u = g.url }
+    assert_equal 8, u.split("&").length, u
+    assert u.include?("key=asdfapikey"), u
+    assert !u.include?("client"), u
+    assert !u.include?("signature"), u
+  end
+
+  def test_url_for_business
+    g = default_map
+    g.client_id = "asdfclientid"
+    g.private_key = "asdfprivatekey"
+    u = nil
+    assert_nothing_raised { u = g.url }
+    assert_equal 9, u.split("&").length, u
+    assert u.include?("signature="), u
+    assert u.include?("client=asdfclientid"), u
+    assert !u.include?("key="), u
+  end
+
+  def test_url_for_business_no_key
+    g = default_map
+    g.client_id = "asdfclientid"
+    u = nil
+    assert_nothing_raised { u = g.url }
+    assert_equal 7, u.split("&").length, u
+    assert !u.include?("signature=")
+    assert !u.include?("client=asdfclientid")
+    assert !u.include?("key=")
   end
 
   def test_get_map_success_no_file_http

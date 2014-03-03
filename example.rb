@@ -6,7 +6,7 @@ print "-------------------------------------------------------------------------
 print "\n"
 map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
 image = map.get_map
-print "Got a map of size #{image.length}, should be rougly 100K\n"
+print "Got a map of size #{image.length}, should be roughly 100K\n"
 image_url = map.url(:auto)
 print "The URL for this map is '#{image_url}'\n"
 
@@ -23,7 +23,7 @@ map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:add
 map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:address => "1 1st Street Northeast, Washington, DC"))
 image = map.get_map
 
-print "Got a map of size #{image.length}, should be rougly 50K\n"
+print "Got a map of size #{image.length}, should be roughly 50K\n"
 image_url = map.url(:auto)
 print "The URL for this map is '#{image_url}'\n"
 
