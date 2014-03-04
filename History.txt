@@ -1,3 +1,6 @@
+== 1.2.1 / 2014-03-03
+* Fixed bug in the signature generation for business customers from 1.2.0
+
 == 1.2.0 / 2014-03-03
 * Added support for setting an API key for monitoring, and a client ID/private key for business customers (thanks forrest!)
 * Changed to use maps.googleapis.com instead of maps.google.com (thanks nathany!)
