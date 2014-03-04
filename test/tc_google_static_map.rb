@@ -116,11 +116,11 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
   def test_url_for_business
     g = default_map
     g.client_id = "asdfclientid"
-    g.private_key = "asdfprivatekey"
+    g.private_key = "vNIXE0xscrmjlyV-12Nj_BvUPaw="
     u = nil
     assert_nothing_raised { u = g.url }
     assert_equal 9, u.split("&").length, u
-    assert u.include?("signature="), u
+    assert u.include?("signature=qB3i5UMtI7tHPz-cy_BGrl-5i80="), u
     assert u.include?("client=asdfclientid"), u
     assert !u.include?("key="), u
   end
