@@ -114,17 +114,8 @@ class GoogleStaticMap
     attrs << ["client", @client_id] if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
     path << attrs.sort_by {|k,v| k}.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
     if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-      path << "&signature=" << sign(path)
-=======
       signature = GoogleStaticMapHelpers.sign(path, @private_key)
       path << "&signature=" << signature
->>>>>>> Stashed changes
-=======
-      signature = sign(path)
-      path << "&signature=" << signature
->>>>>>> 7695209279b4c91623ddc652c03716119e78a6e7
     end
     base + path
   end
