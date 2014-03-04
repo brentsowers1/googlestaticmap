@@ -14,4 +14,5 @@ Gem::Specification.new do |spec|
   spec.homepage          = 'http://www.coordinatecommons.com/googlestaticmap/'
 
   spec.add_development_dependency "rake", ">= 10.1.1"
+  spec.add_development_dependency "mocha", ">= 1.0.0"
 end
