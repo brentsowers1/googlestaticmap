@@ -50,6 +50,15 @@ class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
     end
   end
 
+  def test_signature
+    # This comes from the google example at
+    # https://developers.google.com/maps/documentation/business/webservices/auth
+    private_key = "vNIXE0xscrmjlyV-12Nj_BvUPaw="
+    url = "/maps/api/geocode/json?address=New+York&sensor=false&client=clientID"
+    sig = GoogleStaticMapHelpers.sign(url, private_key)
+    assert_equal sig, "KrU1TzVQM7Ur0i8i7K3huiw3MsA="
+  end
+
   private
   def ivs_no_at
     ivs = {}

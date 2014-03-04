@@ -2,8 +2,6 @@
 # info, etc.
 
 require 'cgi'
-require 'base64'
-require 'openssl'
 require 'net/http'
 require 'net/https' if RUBY_VERSION < "1.9"
 require File.dirname(__FILE__) +  '/googlestaticmap_helper'
@@ -114,9 +112,14 @@ class GoogleStaticMap
     attrs << ["center", @center.to_s] if !@center.nil?
     attrs << ["key", @api_key] if !@api_key.nil?
     attrs << ["client", @client_id] if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
-    path << attrs.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
+    path << attrs.sort_by {|k,v| k}.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
     if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
+<<<<<<< Updated upstream
       path << "&signature=" << sign(path)
+=======
+      signature = GoogleStaticMapHelpers.sign(path, @private_key)
+      path << "&signature=" << signature
+>>>>>>> Stashed changes
     end
     base + path
   end
@@ -155,24 +158,6 @@ class GoogleStaticMap
         raise Exception.new("Error while retrieve google map, no response")
       end
     end
-  end
-
-  private
-
-  # signing code is grabbed from https://github.com/alexreisner/geocoder
-  def sign(path)
-    raw_private_key = url_safe_base64_decode(@private_key)
-    digest = OpenSSL::Digest.new('sha1')
-    raw_signature = OpenSSL::HMAC.digest(digest, raw_private_key, path)
-    url_safe_base64_encode(raw_signature)
-  end
-
-  def url_safe_base64_decode(base64_string)
-    Base64.decode64(base64_string.tr('-_', '+/'))
-  end
-
-  def url_safe_base64_encode(raw)
-    Base64.encode64(raw).tr('+/', '-_').strip
   end
 
 end
@@ -239,7 +224,7 @@ class MapMarker
   def to_s
     raise Exception.new("Need a location for the marker") unless @location && @location.is_a?(MapLocation)
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["location"])
-    s = attrs.to_a.collect do |k|
+    s = attrs.to_a.sort_by {|x| x[0]}.collect do |k|
       # If the icon URL is URL encoded, it won't work
       val = (k[0] == "icon" ? k[1] : CGI.escape(k[1].to_s))
       "#{k[0]}:#{val}"
@@ -273,7 +258,7 @@ class MapPath
   def to_s
     raise Exception.new("Need more than one point for the path") unless @points && @points.length > 1
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["points"])
-    s = attrs.to_a.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join(MAP_SEPARATOR)
+    s = attrs.to_a.sort_by {|x| x[0]}.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join(MAP_SEPARATOR)
     s << MAP_SEPARATOR << @points.join(MAP_SEPARATOR)
   end
 end
