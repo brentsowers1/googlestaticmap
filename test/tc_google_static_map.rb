@@ -120,7 +120,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
     assert_nothing_raised { u = g.url }
     assert_equal 9, u.split("&").length, u
-    assert u.include?("signature="), u
+    assert u.include?("signature=8TfQUSKL18M2I9lU9QR0wN6o-lQ="), u
     assert u.include?("client=asdfclientid"), u
     assert !u.include?("key="), u
   end
