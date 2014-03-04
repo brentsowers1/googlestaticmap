@@ -1,3 +1,6 @@
+*.gem
+Gemfile*.lock
+
 .idea
 .idea/*
 map.gif
