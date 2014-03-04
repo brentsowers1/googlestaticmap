@@ -116,7 +116,8 @@ class GoogleStaticMap
     attrs << ["client", @client_id] if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
     path << attrs.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
     if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
-      path << "&signature=" << sign(path)
+      signature = sign(path)
+      path << "&signature=" << signature
     end
     base + path
   end
