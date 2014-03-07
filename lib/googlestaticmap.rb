@@ -74,6 +74,10 @@ class GoogleStaticMap
   attr_accessor :client_id
   attr_accessor :private_key
 
+  # Channel - identifier channel for tracking API source in enterprise tools
+  #           see https://developers.google.com/maps/documentation/business/clientside/quota for details
+  attr_accessor :channel
+
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],
@@ -104,7 +108,7 @@ class GoogleStaticMap
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
                "proxy_address", "proxy_port", "api_key", "client_id",
-               "private_key"],
+               "private_key", "channel"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     @markers.each {|m| attrs << ["markers",m.to_s] }
