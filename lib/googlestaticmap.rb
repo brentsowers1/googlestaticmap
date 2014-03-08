@@ -74,6 +74,10 @@ class GoogleStaticMap
   attr_accessor :client_id
   attr_accessor :private_key
 
+  # Channel - identifier channel for tracking API source in enterprise tools
+  #           see https://developers.google.com/maps/documentation/business/clientside/quota for details
+  attr_accessor :channel
+
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],

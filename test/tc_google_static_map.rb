@@ -80,6 +80,12 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert !f.include?("http://maps.googleapis.com")
   end
 
+  def test_channel
+    g = default_map
+    g.channel = "CHANNEL"
+    assert g.url.include?("channel=CHANNEL")
+  end
+
   def test_url_auto
     g = default_map
     u = nil
