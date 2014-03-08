@@ -66,6 +66,12 @@ If you are a Maps For Businesses customer with a client ID and private key (http
 
     map = GoogleStaticMap.new(:client_id => "my_client_id", :private_key => "my_private_key")
 
+You can also specify a channel for better tracking if you are a Maps For Businesses customer (https://developers.google.com/maps/documentation/business/clientside/quota#usage_reports):
+
+    map.channel = "Tracking channel"
+
+
+
 ## Compatibility
 
 This has been tested and is working with Ruby 1.8.7, 1.9.3, 2.0.0, and 2.1.1, and JRuby 1.7.11.

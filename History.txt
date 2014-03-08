@@ -1,5 +1,8 @@
+== 1.2.2 / 2014-03-08
+* Added channel parameter for tracking (thanks dfenniak!)
+
 == 1.2.1 / 2014-03-03
-* Fixed bug in the signature generation for business customers from 1.2.0
+* Fixed bug in the signature generation for business customers from 1.2.0 (thanks nathany!)
 
 == 1.2.0 / 2014-03-03
 * Added support for setting an API key for monitoring, and a client ID/private key for business customers (thanks forrest!)
