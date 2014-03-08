@@ -108,7 +108,7 @@ class GoogleStaticMap
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
                "proxy_address", "proxy_port", "api_key", "client_id",
-               "private_key", "channel"],
+               "private_key"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     @markers.each {|m| attrs << ["markers",m.to_s] }
