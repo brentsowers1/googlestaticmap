@@ -27,6 +27,10 @@ this URL as the src of an img element on an HTML page
     map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
     image_url = map.url(:auto)
 
+When using the url function you can force the final url to use http or https:
+
+    image_url = map.url('http')
+    
 Get a map with blue markers at the White House and the Supreme Court, zoomed
 the closest that the map can be with both markers visible, at the default
 size.  image will be the binary data of the map
