@@ -119,6 +119,18 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert !u.include?("signature"), u
   end
 
+  def test_url_api_key_with_private_key
+    g = default_map
+    g.api_key = "asdfapikey"
+    g.private_key = "vNIXE0xscrmjlyV-12Nj_BvUPaw="
+    u = nil
+    assert_nothing_raised { u = g.url }
+    assert_equal 9, u.split("&").length, u
+    assert u.include?("key=asdfapikey"), u
+    assert !u.include?("client"), u
+    assert u.include?("signature="), u
+  end
+
   def test_url_for_business
     g = default_map
     g.client_id = "asdfclientid"
