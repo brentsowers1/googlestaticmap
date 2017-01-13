@@ -64,14 +64,19 @@ class GoogleStaticMap
   # If proxy_address is set, set this to the port of the proxy server
   attr_accessor :proxy_port
 
-  # API Key - see https://developers.google.com/maps/documentation/staticmaps/#api_key for details
-  # Note that if this is set, the client ID and private key will be ignored if set
+  # API Key - see https://developers.google.com/maps/documentation/static-maps/get-api-key#key for details
+  # Note that if this is set, you cannot provide a client ID
   attr_accessor :api_key
 
-  # ClientId/PrivateKey for business customers -
-  # see https://developers.google.com/maps/documentation/business/webservices/auth#generating_valid_signatures for details
-  # These will be ignored if api_key is set
+  # ClientId for business customers -
+  # see https://developers.google.com/maps/documentation/static-maps/get-api-key#key for details
+  # Note that if this is set, you cannot provide an API key.
   attr_accessor :client_id
+
+  # The private key, also known as the URL signing secret, is used to to generate the signature parameter
+  # in the URL. This is required if you are using a client ID, or a premium API key, and is optional
+  # if you are using a standard API key.  See 
+  # https://developers.google.com/maps/documentation/static-maps/get-api-key for more details
   attr_accessor :private_key
 
   # Channel - identifier channel for tracking API source in enterprise tools
@@ -100,6 +105,12 @@ class GoogleStaticMap
     unless @center || @markers.length > 0 || @paths.length > 0
       raise Exception.new("Need to specify either a center, markers, or a path")
     end
+    if !@api_key.nil? && !@client_id.nil?
+      rasise Exception.new("You cannot specify both an API key and a client ID, only specify one")
+    end
+    if !@client_id.nil? && @private_key.nil?
+      raise Exception.new("private_key must be specified if using a client ID")
+    end
     protocol = 'http' unless protocol == 'http' || protocol == 'https' ||
                              protocol == :auto
     protocol = protocol == :auto ? '' : protocol + ":"
@@ -115,7 +126,7 @@ class GoogleStaticMap
     @paths.each {|p| attrs << ["path",p.to_s] }
     attrs << ["center", @center.to_s] if !@center.nil?
     attrs << ["key", @api_key] if !@api_key.nil?
-    attrs << ["client", @client_id] if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
+    attrs << ["client", @client_id] if !@client_id.nil?
     path << attrs.sort_by {|k,v| k}.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
     if @api_key.nil? && !@client_id.nil? && !@private_key.nil?
       signature = GoogleStaticMapHelpers.sign(path, @private_key)
