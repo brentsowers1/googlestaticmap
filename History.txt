@@ -1,3 +1,6 @@
+== 1.2.3 / 2017-01-12
+* Signature is now sent when using an API key (thanks mauu-alpha!)
+
 == 1.2.2 / 2014-03-08
 * Added channel parameter for tracking (thanks dfenniak!)
 

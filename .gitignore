@@ -1,5 +1,5 @@
 Gemfile*.lock
-
+*.gem
 .idea
 .idea/*
 map.gif
