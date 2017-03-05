@@ -75,7 +75,7 @@ class GoogleStaticMap
 
   # The private key, also known as the URL signing secret, is used to to generate the signature parameter
   # in the URL. This is required if you are using a client ID, or a premium API key, and is optional
-  # if you are using a standard API key.  See 
+  # if you are using a standard API key.  See
   # https://developers.google.com/maps/documentation/static-maps/get-api-key for more details
   attr_accessor :private_key
 
@@ -83,12 +83,16 @@ class GoogleStaticMap
   #           see https://developers.google.com/maps/documentation/business/clientside/quota for details
   attr_accessor :channel
 
+  # Language - :en, :ja
+  #           see https://developers.google.com/maps/documentation/static-maps/intro for details
+  attr_accessor :language
+
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],
                 :sensor => false, :maptype => "roadmap", :paths => [],
                 :proxy_port => nil, :proxy_address => nil, :api_key => nil,
-                :client_id => nil, :private_key => nil}
+                :client_id => nil, :private_key => nil, :language => nil}
 
     attributes = defaults.merge(attrs)
     attributes.each {|k,v| self.send("#{k}=".to_sym,v)}
@@ -291,5 +295,3 @@ class MapPolygon < MapPath
     attrs.each {|k,v| self.send("#{k}=".to_sym,v)}
   end
 end
-
-
