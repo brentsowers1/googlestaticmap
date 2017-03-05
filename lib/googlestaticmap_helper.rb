@@ -21,7 +21,14 @@ module GoogleStaticMapHelpers #:nodoc: all
       iv_name = i.to_s[1..-1]
       unless ivs_to_exclude.include?(iv_name)
         val = object.instance_variable_get(i)
-        val = CGI.escape(val.to_s) if options.has_key?(:cgi_escape_values)
+        if options.has_key?(:cgi_escape_values)
+          val = case val
+                when ::MapLocation, ::MapMarker, ::MapPath, ::MapPolygon
+                  val.to_s
+                else
+                  CGI.escape(val.to_s)
+                end
+        end
         ivs[iv_name] = val
       end
     end
