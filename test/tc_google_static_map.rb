@@ -97,6 +97,15 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_no_match /^\/\/maps.googleapis.com/, f
   end
 
+  # Language is the only nullable one that goes through the normal safe instance
+  # variable pattern
+  def test_url_with_langauge
+    g = default_map
+    g.language = "jp"
+    assert g.url.include?("language=jp")
+  end
+
+
   def test_url_https
     g = default_map
     u = nil

@@ -5,7 +5,7 @@ require File.dirname(__FILE__) +  '/../lib/googlestaticmap_helper'
 class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
 
   IVS = {"@var1" => 1, "@var2" => 2, "@var3" => 3,
-         "@url" => "http://maps.google.com"}
+         "@url" => "http://maps.google.com", "@nilvar" => nil}
 
   class MockRuby18Object
     def self.instance_variables
@@ -30,14 +30,16 @@ class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
 
   def test_safe_instance_variables_no_params
     [MockRuby18Object, MockRuby19Object].each do |o|
-      assert_equal ivs_no_at, GoogleStaticMapHelpers.safe_instance_variables(o)
+      sivs = GoogleStaticMapHelpers.safe_instance_variables(o)
+      assert_equal ivs_no_at, sivs
+      assert !sivs.has_key?("@nilvar")
     end
   end
 
   def test_safe_instance_variables_exclude
     [MockRuby18Object, MockRuby19Object].each do |o|
       sivs = GoogleStaticMapHelpers.safe_instance_variables(o, ["var2"])
-      assert_equal IVS.length-1, sivs.length
+      assert_equal IVS.length-2, sivs.length
       assert !sivs.has_key?("@var2")
     end
   end
@@ -45,7 +47,7 @@ class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
   def test_safe_instance_variables_cgi
     [MockRuby18Object, MockRuby19Object].each do |o|
       sivs = GoogleStaticMapHelpers.safe_instance_variables(o, [], :cgi_escape_values => true)
-      assert_equal IVS.length, sivs.length
+      assert_equal IVS.length-1, sivs.length
       assert_equal CGI.escape(IVS["@url"]), sivs["url"]
     end
   end
@@ -63,7 +65,7 @@ class GoogleStaticMapHelperTest < Test::Unit::TestCase #:nodoc: all
   def ivs_no_at
     ivs = {}
     IVS.each do |k,v|
-      ivs[k[1..-1]] = v
+      ivs[k[1..-1]] = v unless v.nil?
     end
     ivs
   end
