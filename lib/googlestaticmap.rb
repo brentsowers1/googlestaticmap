@@ -87,6 +87,16 @@ class GoogleStaticMap
   #           see https://developers.google.com/maps/documentation/static-maps/intro for details
   attr_accessor :language
 
+  # Styles - see https://developers.google.com/maps/documentation/maps-static/styling
+  # styles is should be represented as array of objects
+  # [{feature: 'featureArgument, element: 'elementArgument', rule1: 'rule1Arguement', rule2: 'rule2Arguement', ...},
+  # ...]
+  attr_accessor :styles
+
+  # In case when some parameter should be inserted manually
+  # For example, using https://mapstyle.withgoogle.com/ tool and inserting generated style as is
+  attr_accessor :plain_string
+
   # Takes an optional hash of attributes
   def initialize(attrs={})
     defaults = {:width => 500, :height => 350, :markers => [],
@@ -123,7 +133,7 @@ class GoogleStaticMap
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
               ["markers", "paths", "width", "height", "center",
                "proxy_address", "proxy_port", "api_key", "client_id",
-               "private_key"],
+               "private_key", "styles", "plain_string"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     @markers.each {|m| attrs << ["markers",m.to_s] }
@@ -131,7 +141,9 @@ class GoogleStaticMap
     attrs << ["center", @center.to_s] if !@center.nil?
     attrs << ["key", @api_key] if !@api_key.nil?
     attrs << ["client", @client_id] if !@client_id.nil?
+    get_styles.each { |style| attrs << style } if !@styles.nil?
     path << attrs.sort_by {|k,v| k}.collect {|attr| "#{attr[0]}=#{attr[1]}"}.join("&")
+    path << "&#{@plain_string}" if !@plain_string.nil?
     if (!@api_key.nil? || !@client_id.nil?) && !@private_key.nil?
       signature = GoogleStaticMapHelpers.sign(path, @private_key)
       path << "&signature=" << signature
@@ -175,6 +187,14 @@ class GoogleStaticMap
     end
   end
 
+  private def get_styles
+    @styles.map do |style|
+      values = style.each_pair.map do |(key, value)|
+        "#{key.to_s}:#{value}"
+      end
+      ["style", values.join(CGI.escape('|'))]
+    end
+  end
 end
 
 # Container class for a location on the map.  Set either a latitude and
@@ -230,6 +250,10 @@ class MapMarker
   # appropriate shadow for the image. This shadow is based on the image's
   # visible region and its opacity/transparency.
   attr_accessor :shadow
+
+  # Manage position of marker (anchor:center/bottom/top..)
+  # See - https://developers.google.com/maps/documentation/maps-static/intro#Markers
+  attr_accessor :anchor
 
   # Takes an optional hash of attributes
   def initialize(attrs={})

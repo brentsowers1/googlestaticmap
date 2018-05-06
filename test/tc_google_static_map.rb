@@ -117,6 +117,37 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_no_match /^https:\/\/maps.googleapis.com/, f
   end
 
+  def test_url_styles
+    g = default_map
+    g.styles = [
+      { feature: 'road.local', element: 'geometry', color: '0x00ff00' },
+      { feature: 'landscape', element: 'geometry.fill', color: '0x000000' },
+      { element: 'labels', invert_lightness: true },
+      { feature: 'road.arterial', element: 'labels', invert_lightness: false }
+    ]
+    u = nil
+
+    assert_nothing_raised { u = g.url }
+    assert_equal 11, u.split("&").length, u
+    assert !u.include?("styles"), "styles have to be convered to array of 'style'"
+    assert u.include?('style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00&style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000&style=element:labels%7Cinvert_lightness:true&style=feature:road.arterial%7Celement:labels%7Cinvert_lightness:false')
+
+    assert_nothing_raised {g.relative_url}
+  end
+
+  def test_url_plain_string
+    g = default_map
+    g.plain_string = "style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00&style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000"
+    u = nil
+
+    assert_nothing_raised { u = g.url }
+    assert_equal 9, u.split("&").length, u
+    assert !u.include?("plain_string")
+    assert u.include?('&style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00&style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000')
+
+    assert_nothing_raised {g.relative_url}
+  end
+
   def test_url_api_key
     g = default_map
     g.api_key = "asdfapikey"
