@@ -27,16 +27,18 @@ class MapMarkerTest < Test::Unit::TestCase #:nodoc: all
     assert_equal "B", m.label
     assert_equal "http://www.google.com", m.icon
     assert_equal false, m.shadow
+    assert_equal 'center', m.anchor
   end
 
   def test_get_string
     m = default_marker
     s = nil
     assert_nothing_raised {s = m.to_s}
-    assert_equal 6, s.split(MAP_SEPARATOR).length
+    assert_equal 7, s.split(MAP_SEPARATOR).length
     assert s.include?(CGI.escape("Washington, DC"))
     assert s.include?("color:green")
     assert s.include?("icon:http://www.google.com")
+    assert s.include?("anchor:center")
   end
 
   def test_string_is_a_valid_ruby_uri
@@ -51,6 +53,7 @@ class MapMarkerTest < Test::Unit::TestCase #:nodoc: all
                   :size => "tiny",
                   :label => "B",
                   :icon => "http://www.google.com",
+                  :anchor => 'center',
                   :shadow => false)
   end
 end
