@@ -1,6 +1,6 @@
 == 1.2.5 / 2018-05-07
-* Added styles, plain_string options to GoogleStaticMap
-* Added anchor option to MapMarker
+* Added styles, plain_string options to GoogleStaticMap (thanks anplug!)
+* Added anchor option to MapMarker (thanks anplug!)
 
 == 1.2.4 / 2017-03-05
 * Added language option (thanks kntmrkm!)

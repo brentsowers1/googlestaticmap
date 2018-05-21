@@ -187,7 +187,7 @@ class GoogleStaticMap
     end
   end
 
-  private def get_styles
+  def get_styles
     @styles.map do |style|
       values = style.each_pair.map do |(key, value)|
         "#{key.to_s}:#{value}"

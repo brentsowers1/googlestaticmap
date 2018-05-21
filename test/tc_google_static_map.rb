@@ -130,7 +130,9 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_nothing_raised { u = g.url }
     assert_equal 11, u.split("&").length, u
     assert !u.include?("styles"), "styles have to be convered to array of 'style'"
-    assert u.include?('style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00&style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000&style=element:labels%7Cinvert_lightness:true&style=feature:road.arterial%7Celement:labels%7Cinvert_lightness:false')
+    assert u.include?('style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00'), u
+    assert u.include?('style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000'), u
+    assert u.include?('style=element:labels%7Cinvert_lightness:true&style=feature:road.arterial%7Celement:labels%7Cinvert_lightness:false'), u
 
     assert_nothing_raised {g.relative_url}
   end
