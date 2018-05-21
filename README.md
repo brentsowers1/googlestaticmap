@@ -78,7 +78,7 @@ You can also specify a channel for better tracking if you are a Maps For Busines
 
 ## Compatibility
 
-This has been tested and is working with Ruby 1.9.3, 2.0.0, 2.1.1, 2.1.10, 2.2.6, 2.3.3, 2.4.0, and the latest JRuby.
+This has been tested and is working with Ruby 1.9.3, 2.0.0, 2.1.1, 2.1.10, 2.2.6, 2.3.7, 2.4.4, 2.5.1, and the latest JRuby.
 
 ## Author
 
