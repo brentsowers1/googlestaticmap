@@ -288,6 +288,10 @@ class MapPath
   # MapPositions for each point on the line
   attr_accessor :points
 
+  # Encoded polyline
+  # https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+  attr_accessor :enc
+
   # Pass an optional hash of arguments
   def initialize(attrs={})
     @points = []
@@ -295,10 +299,22 @@ class MapPath
   end
 
   def to_s
-    raise Exception.new("Need more than one point for the path") unless @points && @points.length > 1
-    attrs = GoogleStaticMapHelpers.safe_instance_variables(self, ["points"])
-    s = attrs.to_a.sort_by {|x| x[0]}.collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.join(MAP_SEPARATOR)
-    s << MAP_SEPARATOR << @points.join(MAP_SEPARATOR)
+    if @enc
+      joined_attributes(GoogleStaticMapHelpers.safe_instance_variables(self, ["points"]))
+    else
+      raise Exception.new("Need more than one point for the path") unless @points && @points.length > 1
+
+      s = joined_attributes(GoogleStaticMapHelpers.safe_instance_variables(self, ["points", "enc"]))
+      s << MAP_SEPARATOR << @points.join(MAP_SEPARATOR)
+    end
+  end
+
+  def joined_attributes(attrs)
+    # To be sure that enc is the last parameter
+    attrs.to_a.
+      sort_by {|x| -x[0].length}.
+      collect {|k| "#{k[0]}:#{CGI.escape(k[1].to_s)}"}.
+      join(MAP_SEPARATOR)
   end
 end
 
