@@ -22,6 +22,9 @@ class GoogleStaticMap
   # An optional array of MapMarker instances
   attr_accessor :markers
 
+  # An optional array of MapLocation instances that should remain visible on the map, though no markers or other indicators will be displayed
+  attr_accessor :visible
+
   # An optional array of MapPath instances and/or MapPolygon instances to draw
   attr_accessor :paths
 
@@ -99,7 +102,7 @@ class GoogleStaticMap
 
   # Takes an optional hash of attributes
   def initialize(attrs={})
-    defaults = {:width => 500, :height => 350, :markers => [],
+    defaults = {:width => 500, :height => 350, :markers => [], :visible => [],
                 :sensor => false, :maptype => "roadmap", :paths => [],
                 :proxy_port => nil, :proxy_address => nil, :api_key => nil,
                 :client_id => nil, :private_key => nil, :language => nil}
@@ -116,8 +119,8 @@ class GoogleStaticMap
   #   select the appropriate protocol (if the page is loaded with https, it will
   #   use https). Defaults to http
   def url(protocol='http')
-    unless @center || @markers.length > 0 || @paths.length > 0
-      raise Exception.new("Need to specify either a center, markers, or a path")
+    unless @center || @markers.length > 0 || @paths.length > 0 || @visible.length > 0
+      raise Exception.new("Need to specify either a center, markers, visible points, or a path")
     end
     if !@api_key.nil? && !@client_id.nil?
       rasise Exception.new("You cannot specify both an API key and a client ID, only specify one")
@@ -131,13 +134,14 @@ class GoogleStaticMap
     base = "#{protocol}//maps.googleapis.com"
     path = "/maps/api/staticmap?"
     attrs = GoogleStaticMapHelpers.safe_instance_variables(self,
-              ["markers", "paths", "width", "height", "center",
+              ["markers", "visible", "paths", "width", "height", "center",
                "proxy_address", "proxy_port", "api_key", "client_id",
                "private_key", "styles", "plain_string"],
               :cgi_escape_values => true).to_a
     attrs << ["size", "#{@width}x#{@height}"] if @width && @height
     @markers.each {|m| attrs << ["markers",m.to_s] }
     @paths.each {|p| attrs << ["path",p.to_s] }
+    attrs << ["visible", @visible.join(MAP_SEPARATOR)] if !@visible.nil? && @visible.any?
     attrs << ["center", @center.to_s] if !@center.nil?
     attrs << ["key", @api_key] if !@api_key.nil?
     attrs << ["client", @client_id] if !@client_id.nil?

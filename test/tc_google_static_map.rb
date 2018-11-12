@@ -56,13 +56,15 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert_equal 600, g.width
     assert_equal "hybrid", g.maptype
     assert_equal 1, g.markers.length
+    assert_equal 0, g.visible.length
   end
 
   def test_url
     g = default_map
+    g.visible = [MapLocation.new(:latitude => 43.71, :longitude => 10.41), MapLocation.new(:latitude => 44.16, :longitude => 11.62)]
     u = nil
     assert_nothing_raised { u = g.url }
-    assert_equal 7, u.split("&").length, u
+    assert_equal 8, u.split("&").length, u
     assert u.include?("size=600x400"), "width and height did not get converted in to a size"
     assert u.include?("maptype=hybrid")
     assert u.include?("scale=2")
@@ -71,6 +73,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert u.include?("color:0x00FF00FF")
     assert u.include?("fillcolor:0x00FF0060")
     assert u.include?("38.8,-77.5#{MAP_SEPARATOR}38.8,-76.9#{MAP_SEPARATOR}39.2,-76.9#{MAP_SEPARATOR}39.2,-77.5#{MAP_SEPARATOR}38.8,-77.5"), "Polygon not in URL - #{u}"
+    assert u.include?("43.71,10.41#{MAP_SEPARATOR}44.16,11.62"), "Visible locations not in URL - #{u}"
     assert u.include?("Washington%2C+DC")
     assert !u.include?("key"), "API included when it shouldn't be"
     assert !u.include?("client"), "Client included when it shouldn't be"
