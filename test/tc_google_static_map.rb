@@ -108,7 +108,6 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert g.url.include?("language=jp")
   end
 
-
   def test_url_https
     g = default_map
     u = nil
@@ -183,7 +182,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
     assert_nothing_raised { u = g.url }
     assert_equal 9, u.split("&").length, u
-    assert u.include?("signature=qB3i5UMtI7tHPz-cy_BGrl-5i80="), u
+    assert u.include?("signature=Di7rQ4jUrDiF6vY2PkF1-BRwhAg="), u
     assert u.include?("client=asdfclientid"), u
     assert !u.include?("key="), u
   end

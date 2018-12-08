@@ -41,6 +41,17 @@ class MapPathAndPolygonTest < Test::Unit::TestCase #:nodoc: all
     URI.parse(m.to_s)
   end
 
+  def test_encoded_polylines
+    p = default_path
+    s = nil
+    p.points = nil
+    p.enc = "BigEncodedLineOfSymbols10"
+    assert_nothing_raised { s = p.to_s }
+    assert_equal 3, s.split(MAP_SEPARATOR).length
+    assert s.end_with?("enc:BigEncodedLineOfSymbols10")
+    assert !s.include?("points")
+  end
+
   def test_polygon
     # Polygon inherits from MapPath and uses MapPath's to_s method, so only
     # limited testing needs to happen here
