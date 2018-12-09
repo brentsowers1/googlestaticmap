@@ -64,18 +64,18 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     g.visible = [MapLocation.new(:latitude => 43.71, :longitude => 10.41), MapLocation.new(:latitude => 44.16, :longitude => 11.62)]
     u = nil
     assert_nothing_raised { u = g.url }
-    assert_equal 8, u.split("&").length, u
+    assert_equal 9, u.split("&").length, u
     assert u.include?("size=600x400"), "width and height did not get converted in to a size"
     assert u.include?("maptype=hybrid")
     assert u.include?("scale=2")
     assert u.include?("asdf")
-    assert u.include?("http://maps.googleapis.com")
+    assert u.include?("https://maps.googleapis.com")
     assert u.include?("color:0x00FF00FF")
     assert u.include?("fillcolor:0x00FF0060")
     assert u.include?("38.8,-77.5#{MAP_SEPARATOR}38.8,-76.9#{MAP_SEPARATOR}39.2,-76.9#{MAP_SEPARATOR}39.2,-77.5#{MAP_SEPARATOR}38.8,-77.5"), "Polygon not in URL - #{u}"
     assert u.include?("43.71,10.41#{MAP_SEPARATOR}44.16,11.62"), "Visible locations not in URL - #{u}"
     assert u.include?("Washington%2C+DC")
-    assert !u.include?("key"), "API included when it shouldn't be"
+    assert u.include?("key=asdf")
     assert !u.include?("client"), "Client included when it shouldn't be"
 
     f = nil
@@ -93,7 +93,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     g = default_map
     u = nil
     assert_nothing_raised { u = g.url(:auto) }
-    assert_equal 7, u.split("&").length, u
+    assert_equal 8, u.split("&").length, u
     assert u =~ /^\/\/maps.googleapis.com/, u
     f = nil
     assert_nothing_raised {f = g.relative_url}
@@ -108,12 +108,11 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert g.url.include?("language=jp")
   end
 
-
   def test_url_https
     g = default_map
     u = nil
     assert_nothing_raised { u = g.url('https') }
-    assert_equal 7, u.split("&").length, u
+    assert_equal 8, u.split("&").length, u
     assert u =~ /^https:\/\/maps.googleapis.com/
     f = nil
     assert_nothing_raised {f = g.relative_url}
@@ -131,7 +130,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
 
     assert_nothing_raised { u = g.url }
-    assert_equal 11, u.split("&").length, u
+    assert_equal 12, u.split("&").length, u
     assert !u.include?("styles"), "styles have to be convered to array of 'style'"
     assert u.include?('style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00'), u
     assert u.include?('style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000'), u
@@ -146,7 +145,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     u = nil
 
     assert_nothing_raised { u = g.url }
-    assert_equal 9, u.split("&").length, u
+    assert_equal 10, u.split("&").length, u
     assert !u.include?("plain_string")
     assert u.include?('&style=feature:road.local%7Celement:geometry%7Ccolor:0x00ff00&style=feature:landscape%7Celement:geometry.fill%7Ccolor:0x000000')
 
@@ -178,6 +177,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
 
   def test_url_for_business
     g = default_map
+    g.api_key = nil
     g.client_id = "asdfclientid"
     g.private_key = "vNIXE0xscrmjlyV-12Nj_BvUPaw="
     u = nil
@@ -188,8 +188,16 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
     assert !u.include?("key="), u
   end
 
+  def test_no_api_key_or_client_id
+    g = default_map
+    g.api_key = nil
+    u = nil
+    assert_raise { u = g.url }
+  end
+
   def test_url_for_business_no_private_key
     g = default_map
+    g.api_key = nil
     g.client_id = "asdfclientid"
     u = nil
     assert_raise { u = g.url }
@@ -207,7 +215,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
   def test_get_map_success_no_file_http
     test_data = "asdf"
     MockHttp.any_instance.expects(:get2).returns(MockSuccess.new(test_data))
-    MockHttp.any_instance.expects(:"use_ssl=").with(false).returns(false)
+    MockHttp.any_instance.expects(:"use_ssl=").with(true).returns(true)
     Net::HTTP.expects(:new).returns(MockHttp.new)
 
     g = default_map
@@ -297,6 +305,7 @@ class GoogleStaticMapTest < Test::Unit::TestCase #:nodoc: all
                         :center => MapLocation.new(:address => "Washington, DC"),
                         :paths => [poly],
                         :scale => 2,
-                        :maptype => "hybrid")
+                        :maptype => "hybrid",
+                        :api_key => "asdf")
   end
 end
