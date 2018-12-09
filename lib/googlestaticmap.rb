@@ -113,23 +113,26 @@ class GoogleStaticMap
 
   # Returns the full URL to retrieve this static map.  You can use this as the
   # src for an img to display an image directly on a web page
-  # Example - "http://maps.googleapis.com/maps/api/staticmap?params..."
+  # Example - "https://maps.googleapis.com/maps/api/staticmap?params..."
   # +protocol+ can be 'http', 'https' or :auto. Specifying :auto will not return
   #   a protocol in the URL ("//maps.googleapis.com/..."), allowing the browser to
   #   select the appropriate protocol (if the page is loaded with https, it will
-  #   use https). Defaults to http
-  def url(protocol='http')
+  #   use https). Defaults to https
+  def url(protocol='https')
     unless @center || @markers.length > 0 || @paths.length > 0 || @visible.length > 0
       raise Exception.new("Need to specify either a center, markers, visible points, or a path")
     end
     if !@api_key.nil? && !@client_id.nil?
-      rasise Exception.new("You cannot specify both an API key and a client ID, only specify one")
+      raise Exception.new("You cannot specify both an API key and a client ID, only specify one")
+    end
+    if @api_key.nil? && @client_id.nil?
+      raise Exception.new("You must specify either an API key, or a client ID/private key. Google requires this and the calls to Google will fail without one of these.")
     end
     if !@client_id.nil? && @private_key.nil?
       raise Exception.new("private_key must be specified if using a client ID")
     end
-    protocol = 'http' unless protocol == 'http' || protocol == 'https' ||
-                             protocol == :auto
+    protocol = 'https' unless protocol == 'http' || protocol == 'https' ||
+                              protocol == :auto
     protocol = protocol == :auto ? '' : protocol + ":"
     base = "#{protocol}//maps.googleapis.com"
     path = "/maps/api/staticmap?"
@@ -155,9 +158,9 @@ class GoogleStaticMap
     base + path
   end
 
-  # Returns the URL to retrieve the map, relative to http://maps.googleapis.com
+  # Returns the URL to retrieve the map, relative to https://maps.googleapis.com
   # Example - "/maps/api/staticmap?params..."
-  def relative_url(protocol='http')
+  def relative_url(protocol='https')
     url(protocol).gsub(/[^\/]*\/\/maps\.googleapis\.com/, "")
   end
 
@@ -170,8 +173,8 @@ class GoogleStaticMap
   # +protocol+ - specify http or https here for the protocol to retrieve the
   #              map with. Defaults to http
   # return value - the binary data for the map
-  def get_map(output_file=nil, protocol='http')
-    protocol = 'http' unless protocol == 'http' || protocol == 'https'
+  def get_map(output_file=nil, protocol='https')
+    protocol = 'https' unless protocol == 'http' || protocol == 'https'
     port = protocol == 'https' ? 443 : 80
     http = Net::HTTP.Proxy(@proxy_address,@proxy_port).new("maps.googleapis.com", port)
     http.use_ssl = protocol == 'https'

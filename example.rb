@@ -1,13 +1,22 @@
 require File.dirname(__FILE__) + '/lib/googlestaticmap'
 
+print "This script requires an API key to test. If you do not have one, visit\n"
+print "https://developers.google.com/maps/documentation/javascript/get-api-key\n"
+print "and click Get Started\n\n"
+print "Please enter your API key: "
+api_key = gets.chomp
+
 print "-----------------------------------------------------------------------------\n"
 print "--------------  Test 1, grabbing a map of Washington, DC --------------------\n"
 print "-----------------------------------------------------------------------------\n"
 print "\n"
-map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
+map = GoogleStaticMap.new(
+    :api_key => api_key, 
+    :zoom => 11, 
+    :center => MapLocation.new(:address => "Washington, DC"))
 image = map.get_map
-print "Got a map of size #{image.length}, should be roughly 100K\n"
-image_url = map.url(:auto)
+print "Got a map of size #{image.length}, should be roughly 60K\n"
+image_url = map.url
 print "The URL for this map is '#{image_url}'\n"
 
 
@@ -18,13 +27,13 @@ print "- Court, zoomed the closest that the map can be with both markers visible
 print "- at the default size.                                                      -\n"
 print "-----------------------------------------------------------------------------\n"
 print "\n"
-map = GoogleStaticMap.new
+map = GoogleStaticMap.new(:api_key => api_key)
 map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:address => "1600 Pennsylvania Ave., Washington, DC"))
 map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:address => "1 1st Street Northeast, Washington, DC"))
 image = map.get_map
 
 print "Got a map of size #{image.length}, should be roughly 50K\n"
-image_url = map.url(:auto)
+image_url = map.url
 print "The URL for this map is '#{image_url}'\n"
 
 print "\n\n\n"
@@ -35,7 +44,8 @@ print "- outline solid, centered at the middle of the box, written out to the fi
 print "- map.gif:                                                                  -\n"
 print "-----------------------------------------------------------------------------\n"
 print "\n"
-map = GoogleStaticMap.new(:maptype => "satellite", :format => "gif", :width => 640, :height => 480)
+map = GoogleStaticMap.new(:maptype => "satellite", :format => "gif", :width => 640, :height => 480,
+                          :api_key => api_key)
 poly = MapPolygon.new(:color => "0x00FF00FF", :fillcolor => "0x00FF0060")
 poly.points << MapLocation.new(:latitude => 38.8, :longitude => -77.5)
 poly.points << MapLocation.new(:latitude => 38.8, :longitude => -76.9)

@@ -11,20 +11,26 @@ URL to download the map from.  You can also call get_map to actually
 download the map from Google, return the bytes, and optionally write the
 image to a file.
 
+You must have an API key from Google for personal use, or if you have a business
+account, a client ID and private key from Google. If you do not have a key, you 
+can obtain one from https://developers.google.com/maps/documentation/javascript/get-api-key
+
 ## Examples:
 
 Get a simple static map centered at Washington, DC, with the default size
 (500 x 350), zoomed to level 11.  image will be the binary data of the map
 
     require 'googlestaticmap'
-    map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
+    map = GoogleStaticMap.new(:api_key => "your API key", :zoom => 11, 
+                              :center => MapLocation.new(:address => "Washington, DC"))
     image = map.get_map
 
 Get the URL of the image described in the previous example, so you can insert
 this URL as the src of an img element on an HTML page
 
     require 'googlestaticmap'
-    map = GoogleStaticMap.new(:zoom => 11, :center => MapLocation.new(:address => "Washington, DC"))
+    map = GoogleStaticMap.new(:api_key => "your API key", :zoom => 11, 
+                              :center => MapLocation.new(:address => "Washington, DC"))
     image_url = map.url(:auto)
 
 When using the url function you can force the final url to use http or https:
@@ -37,6 +43,7 @@ size.  image will be the binary data of the map
 
     require 'googlestaticmap'
     map = GoogleStaticMap.new
+    map.api_key = "your API key"
     map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:address => "1600 Pennsylvania Ave., Washington, DC"))
     map.markers << MapMarker.new(:color => "blue", :location => MapLocation.new(:address => "1 1st Street Northeast, Washington, DC"))
     image = map.get_map
@@ -47,7 +54,8 @@ outline solid, centered at the middle of the box, written out to the file
 map.gif:
 
     require 'googlestaticmap'
-    map = GoogleStaticMap.new(:maptype => "satellite", :format => "gif", :width => 640, :height => 480)
+    map = GoogleStaticMap.new(:api_key => "your API key", :maptype => "satellite", 
+                              :format => "gif", :width => 640, :height => 480)
     poly = MapPolygon.new(:color => "0x00FF00FF", :fillcolor => "0x00FF0060")
     poly.points << MapLocation.new(:latitude => 38.8, :longitude => -77.5)
     poly.points << MapLocation.new(:latitude => 38.8, :longitude => -76.9)
@@ -61,10 +69,6 @@ If you're working behind a proxy, create the map object this way:
 
     map = GoogleStaticMap.new(:proxy_address=>'my.proxy.host', :proxy_port=>8080, :width => 640, :height => 480)
 
-If you have a public API key for tracking usage (https://developers.google.com/maps/documentation/staticmaps/#api_key):
-
-    map = GoogleStaticMap.new(:api_key => "my_api_key")
-
 If you are a Maps For Businesses customer with a client ID and private key (https://developers.google.com/maps/documentation/business/webservices/#client_id)
 (note that you cannot set an api_key if you want to use client_id and private_key):
 
@@ -73,6 +77,8 @@ If you are a Maps For Businesses customer with a client ID and private key (http
 You can also specify a channel for better tracking if you are a Maps For Businesses customer (https://developers.google.com/maps/documentation/business/clientside/quota#usage_reports):
 
     map.channel = "Tracking channel"
+
+There are many other properties on the map that you can set. See https://github.com/brentsowers1/googlestaticmap/blob/master/lib/googlestaticmap.rb for all parameters.
 
 
 

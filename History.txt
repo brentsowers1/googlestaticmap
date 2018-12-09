@@ -1,3 +1,10 @@
+== 1.2.6 / 2018-12-08
+* Added the visible property to set map locations that will be visible (thanks luca!)
+* Changed default protocol to https
+* Updated example script to ask for an API key
+* Forced specification of an API key or client ID/private key, since Google now requires this
+* Updated documentation to specify that an API key or client ID/private key is required
+
 == 1.2.5 / 2018-05-07
 * Added styles, plain_string options to GoogleStaticMap (thanks anplug!)
 * Added anchor option to MapMarker (thanks anplug!)
